@@ -1,7 +1,18 @@
-/// Gemini API Configuration
+/// Gemini API Configuration Template
+///
+/// INSTRUCTIONS:
+/// 1. Copy this file and rename it to 'gemini_config.dart'
+/// 2. Replace 'YOUR_API_KEY_HERE' with your actual Gemini API key
+/// 3. Get your API key from: https://makersuite.google.com/app/apikey
+///
+/// SECURITY NOTE:
+/// - Never commit gemini_config.dart to Git
+/// - It's already in .gitignore
+/// - Only share this template file
+
 class GeminiConfig {
-  // Your Gemini API Key
-  static const String apiKey = 'AIzaSyC49FaAvNqbGtxXuTFsNJCAytSug9NO0lA';
+  // Your Gemini API Key - Get it from https://makersuite.google.com/app/apikey
+  static const String apiKey = 'YOUR_API_KEY_HERE';
 
   // API Endpoints - Using v1beta with gemini-2.5-flash
   static const String baseUrl =

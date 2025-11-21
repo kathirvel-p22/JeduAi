@@ -68,11 +68,10 @@ coverage/
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-# API Keys (Security)
-# Uncomment these if you want to hide API keys
-# lib/config/gemini_config.dart
-# lib/config/firebase_config.dart
-# lib/config/supabase_config.dart
+# API Keys (Security) - IMPORTANT: Keep these files out of Git!
+lib/config/gemini_config.dart
+lib/config/firebase_config.dart
+lib/config/supabase_config.dart
 
 # Environment files
 .env
