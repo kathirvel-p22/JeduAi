@@ -41,7 +41,33 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
     return Scaffold(
       appBar: _selectedIndex == 0
           ? AppBar(
-              title: const Text('Admin Dashboard'),
+              title: Row(
+                children: [
+                  Icon(Icons.school_rounded, size: 28),
+                  SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'JeduAI',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      Text(
+                        'Admin Portal',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               flexibleSpace: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

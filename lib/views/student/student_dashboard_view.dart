@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../controllers/auth_controller.dart';
 import '../../controllers/student_controller.dart';
 import 'student_assessment_view.dart';
-import 'student_translation_view.dart';
+import '../common/advanced_translation_view.dart';
 import 'student_ai_tutor_view.dart';
 import 'student_learning_view.dart';
 import 'student_online_classes_view.dart';
@@ -31,7 +31,7 @@ class _StudentDashboardViewState extends State<StudentDashboardView> {
     final List<Widget> pages = [
       _buildDashboardContent(),
       StudentAssessmentView(),
-      StudentTranslationView(),
+      AdvancedTranslationView(),
       StudentAiTutorView(),
       StudentLearningView(),
       StudentOnlineClassesView(),
@@ -41,7 +41,33 @@ class _StudentDashboardViewState extends State<StudentDashboardView> {
     return Scaffold(
       appBar: _selectedIndex == 0
           ? AppBar(
-              title: const Text('Student Dashboard'),
+              title: Row(
+                children: [
+                  Icon(Icons.school_rounded, size: 28),
+                  SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'JeduAI',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      Text(
+                        'Student Portal',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               flexibleSpace: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

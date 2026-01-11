@@ -70,7 +70,7 @@ class AIAssessmentGeneratorService {
         } catch (parseError) {
           print('❌ Error parsing response: $parseError');
           print('Response data: $data');
-          throw parseError;
+          rethrow;
         }
       } else {
         print('❌ API Error: ${response.statusCode}');
@@ -204,16 +204,11 @@ Generate ONLY the JSON array now (no other text):
     int numberOfQuestions,
     int duration,
   ) {
-    final questions = List.generate(
+    // Generate more realistic sample questions based on subject
+    final questions = _generateRealisticQuestions(
+      subject,
+      difficulty,
       numberOfQuestions,
-      (index) => {
-        'question':
-            'Sample question ${index + 1} for $subject ($difficulty level)',
-        'options': ['Option A', 'Option B', 'Option C', 'Option D'],
-        'correctAnswer': 0,
-        'explanation':
-            'This is a sample question. The AI-generated version will have real content.',
-      },
     );
 
     return {
@@ -231,6 +226,177 @@ Generate ONLY the JSON array now (no other text):
         'isFallback': true,
       },
     };
+  }
+
+  List<Map<String, dynamic>> _generateRealisticQuestions(
+    String subject,
+    String difficulty,
+    int count,
+  ) {
+    // Sample question templates based on common subjects
+    final questionTemplates = {
+      'Big Data Analytics': [
+        {
+          'question': 'What is the primary characteristic of Big Data?',
+          'options': [
+            'Volume, Velocity, Variety',
+            'Speed only',
+            'Size only',
+            'Structure only',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'Big Data is characterized by the 3 Vs: Volume, Velocity, and Variety.',
+        },
+        {
+          'question':
+              'Which tool is commonly used for distributed data processing?',
+          'options': ['Hadoop', 'MS Excel', 'Notepad', 'Paint'],
+          'correctAnswer': 0,
+          'explanation':
+              'Hadoop is a framework for distributed storage and processing of big data.',
+        },
+        {
+          'question': 'What does HDFS stand for?',
+          'options': [
+            'Hadoop Distributed File System',
+            'High Data File System',
+            'Hybrid Data Format System',
+            'Hard Disk File System',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'HDFS is the primary storage system used by Hadoop applications.',
+        },
+        {
+          'question': 'Which programming model is used in Hadoop?',
+          'options': [
+            'MapReduce',
+            'Object-Oriented',
+            'Functional',
+            'Procedural',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'MapReduce is a programming model for processing large data sets with parallel algorithms.',
+        },
+        {
+          'question': 'What is Apache Spark primarily used for?',
+          'options': [
+            'Fast data processing',
+            'Web browsing',
+            'Email management',
+            'Video editing',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'Apache Spark is an open-source unified analytics engine for large-scale data processing.',
+        },
+      ],
+      'Data Science': [
+        {
+          'question': 'What is the first step in the data science process?',
+          'options': [
+            'Data Collection',
+            'Model Deployment',
+            'Visualization',
+            'Testing',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'Data collection is the first crucial step in any data science project.',
+        },
+        {
+          'question':
+              'Which Python library is most commonly used for data manipulation?',
+          'options': ['Pandas', 'Flask', 'Django', 'Tkinter'],
+          'correctAnswer': 0,
+          'explanation':
+              'Pandas is the go-to library for data manipulation and analysis in Python.',
+        },
+      ],
+      'Computer Science': [
+        {
+          'question': 'What does CPU stand for?',
+          'options': [
+            'Central Processing Unit',
+            'Computer Personal Unit',
+            'Central Program Utility',
+            'Computer Processing Unit',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'CPU is the Central Processing Unit, the brain of the computer.',
+        },
+        {
+          'question': 'Which data structure uses LIFO principle?',
+          'options': ['Stack', 'Queue', 'Array', 'Tree'],
+          'correctAnswer': 0,
+          'explanation': 'Stack follows Last In First Out (LIFO) principle.',
+        },
+      ],
+      'Cloud Computing': [
+        {
+          'question':
+              'What are the three main service models of cloud computing?',
+          'options': [
+            'IaaS, PaaS, SaaS',
+            'Hardware, Software, Network',
+            'Public, Private, Hybrid',
+            'Storage, Compute, Database',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'The three service models are Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS).',
+        },
+        {
+          'question': 'Which company provides AWS cloud services?',
+          'options': ['Amazon', 'Google', 'Microsoft', 'IBM'],
+          'correctAnswer': 0,
+          'explanation': 'Amazon Web Services (AWS) is provided by Amazon.',
+        },
+      ],
+    };
+
+    // Find matching template or use generic
+    List<Map<String, dynamic>>? templates;
+    for (var key in questionTemplates.keys) {
+      if (subject.toLowerCase().contains(key.toLowerCase())) {
+        templates = questionTemplates[key];
+        break;
+      }
+    }
+
+    // If no specific template found, create generic questions
+    if (templates == null) {
+      return List.generate(
+        count,
+        (index) => {
+          'question':
+              'Question ${index + 1}: What is an important concept in $subject?',
+          'options': [
+            'Correct answer for $subject',
+            'Incorrect option 1',
+            'Incorrect option 2',
+            'Incorrect option 3',
+          ],
+          'correctAnswer': 0,
+          'explanation':
+              'This is a sample question. Configure Gemini API for AI-generated questions.',
+        },
+      );
+    }
+
+    // Repeat and mix templates to reach desired count
+    final questions = <Map<String, dynamic>>[];
+    while (questions.length < count) {
+      for (var template in templates) {
+        if (questions.length >= count) break;
+        questions.add(Map<String, dynamic>.from(template));
+      }
+    }
+
+    return questions.take(count).toList();
   }
 
   // Quick generation for common subjects

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import '../models/online_class_model.dart';
 import 'notification_service.dart';
 
@@ -27,8 +29,43 @@ class OnlineClassService extends GetxService {
   @override
   void onInit() {
     super.onInit();
+    _loadClassesFromStorage(); // Load saved classes first
     _initializeMockData();
     _startRealTimeUpdates();
+  }
+
+  /// Load classes from persistent storage
+  Future<void> _loadClassesFromStorage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final classesString = prefs.getString('online_classes');
+      if (classesString != null && classesString.isNotEmpty) {
+        final List<dynamic> classesJson = jsonDecode(classesString);
+        final loadedClasses = classesJson
+            .map((json) => OnlineClass.fromJson(json))
+            .toList();
+
+        if (loadedClasses.isNotEmpty) {
+          allClasses.value = loadedClasses;
+          _updateClassLists();
+          print('📂 Loaded ${allClasses.length} classes from storage');
+        }
+      }
+    } catch (e) {
+      print('⚠️ Error loading classes: $e');
+    }
+  }
+
+  /// Save classes to persistent storage
+  Future<void> _saveClassesToStorage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final classesJson = allClasses.map((c) => c.toJson()).toList();
+      await prefs.setString('online_classes', jsonEncode(classesJson));
+      print('💾 Saved ${allClasses.length} classes to storage');
+    } catch (e) {
+      print('❌ Error saving classes: $e');
+    }
   }
 
   /// Initialize with mock data for demonstration
@@ -121,13 +158,25 @@ class OnlineClassService extends GetxService {
 
   /// Update class lists based on status
   void _updateClassLists() {
-    liveClasses.value = allClasses
-        .where((c) => c.status == ClassStatus.live)
-        .toList();
+    // Create new lists to trigger reactivity
+    liveClasses.value = List<OnlineClass>.from(
+      allClasses.where((c) => c.status == ClassStatus.live),
+    );
 
-    upcomingClasses.value =
-        allClasses.where((c) => c.status == ClassStatus.scheduled).toList()
-          ..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
+    upcomingClasses.value = List<OnlineClass>.from(
+      allClasses.where((c) => c.status == ClassStatus.scheduled),
+    )..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
+
+    // Log for debugging
+    print('📊 Updated lists:');
+    print('   - All: ${allClasses.length}');
+    print('   - Live: ${liveClasses.length}');
+    print('   - Upcoming: ${upcomingClasses.length}');
+
+    // Force UI update
+    allClasses.refresh();
+    liveClasses.refresh();
+    upcomingClasses.refresh();
   }
 
   /// Staff creates a new online class
@@ -141,10 +190,22 @@ class OnlineClassService extends GetxService {
     required String meetingLink,
     required String description,
     required String classCode,
+    required String targetClass, // e.g., "III CSBS", "All Classes"
     int maxStudents = 50,
   }) async {
     // Simulate API call
     await Future.delayed(const Duration(seconds: 1));
+
+    // Auto-enroll students based on target class
+    List<String> autoEnrolledStudents = [];
+    if (targetClass == 'All Classes') {
+      // Enroll all students (in production, fetch from database)
+      autoEnrolledStudents = ['STU001', 'STU_ADMIN'];
+    } else {
+      // Enroll students from specific class
+      // In production, query database for students in this class
+      autoEnrolledStudents = ['STU001']; // Mock enrollment
+    }
 
     final newClass = OnlineClass(
       id: 'CLS${DateTime.now().millisecondsSinceEpoch}',
@@ -156,16 +217,28 @@ class OnlineClassService extends GetxService {
       duration: duration,
       meetingLink: meetingLink,
       status: ClassStatus.scheduled,
-      enrolledStudents: [],
+      enrolledStudents: autoEnrolledStudents,
       maxStudents: maxStudents,
       description: description,
       classCode: classCode,
     );
 
+    // Add to observable list with proper reactivity
     allClasses.add(newClass);
+
+    // Create new list to trigger change detection
+    allClasses.value = List<OnlineClass>.from(allClasses);
+
+    // Save to persistent storage so it survives logout/login
+    await _saveClassesToStorage();
+
+    // Update categorized lists
     _updateClassLists();
 
-    // Send notification to all students
+    // Wait a moment for UI to update
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    // Send notification to all enrolled students
     _sendNotification(
       'New Class Scheduled',
       '$title by $teacherName on ${_formatDateTime(scheduledTime)}',
@@ -173,13 +246,22 @@ class OnlineClassService extends GetxService {
       newClass.id,
     );
 
+    // Show success with details
     Get.snackbar(
       'Success',
-      'Online class created successfully!',
+      'Online class created! ${autoEnrolledStudents.length} students enrolled.',
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Get.theme.colorScheme.primary,
       colorText: Get.theme.colorScheme.onPrimary,
+      duration: const Duration(seconds: 3),
+      icon: const Icon(Icons.check_circle, color: Colors.white),
     );
+
+    // Log for debugging
+    print('✅ Class created: ${newClass.id} - ${newClass.title}');
+    print('📊 Total classes: ${allClasses.length}');
+    print('📅 Upcoming classes: ${upcomingClasses.length}');
+    print('🔄 Lists updated and UI should refresh');
 
     return newClass;
   }

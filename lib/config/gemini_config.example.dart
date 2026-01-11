@@ -9,6 +9,7 @@
 /// - Never commit gemini_config.dart to Git
 /// - It's already in .gitignore
 /// - Only share this template file
+library;
 
 class GeminiConfig {
   // Your Gemini API Key - Get it from https://makersuite.google.com/app/apikey

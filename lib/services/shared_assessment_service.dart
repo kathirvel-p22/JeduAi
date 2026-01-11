@@ -122,6 +122,105 @@ class SharedAssessmentService extends GetxService {
   void onInit() {
     super.onInit();
     loadAssessments();
+    _initializePredefinedAssessments();
+  }
+
+  // Initialize pre-defined assessments for testing (only visible to admin student)
+  Future<void> _initializePredefinedAssessments() async {
+    // Check if pre-defined assessments already exist
+    if (allAssessments.any((a) => a.id.startsWith('PREDEFINED_'))) {
+      return; // Already initialized
+    }
+
+    // Create pre-defined assessments
+    final predefinedAssessments = [
+      AssessmentData(
+        id: 'PREDEFINED_1',
+        title: 'Basic Arithmetic',
+        subject: 'Mathematics',
+        type: 'Quiz',
+        difficulty: 'Easy',
+        totalQuestions: 15,
+        duration: 20,
+        classLevel: 'ALL', // Visible to all classes
+        createdBy: 'system',
+        createdByName: 'System',
+        createdAt: DateTime.now(),
+        dueDate: DateTime.now().add(Duration(days: 30)),
+        questions: [], // Questions are in take_assessment_view.dart
+        isAIGenerated: false,
+      ),
+      AssessmentData(
+        id: 'PREDEFINED_2',
+        title: 'Algebra Fundamentals',
+        subject: 'Mathematics',
+        type: 'Quiz',
+        difficulty: 'Medium',
+        totalQuestions: 20,
+        duration: 30,
+        classLevel: 'ALL',
+        createdBy: 'system',
+        createdByName: 'System',
+        createdAt: DateTime.now(),
+        dueDate: DateTime.now().add(Duration(days: 30)),
+        questions: [],
+        isAIGenerated: false,
+      ),
+      AssessmentData(
+        id: 'PREDEFINED_4',
+        title: 'Grammar Basics',
+        subject: 'English',
+        type: 'Quiz',
+        difficulty: 'Easy',
+        totalQuestions: 15,
+        duration: 20,
+        classLevel: 'ALL',
+        createdBy: 'system',
+        createdByName: 'System',
+        createdAt: DateTime.now(),
+        dueDate: DateTime.now().add(Duration(days: 30)),
+        questions: [],
+        isAIGenerated: false,
+      ),
+      AssessmentData(
+        id: 'PREDEFINED_10',
+        title: 'HTML & CSS Basics',
+        subject: 'Programming',
+        type: 'Quiz',
+        difficulty: 'Easy',
+        totalQuestions: 20,
+        duration: 30,
+        classLevel: 'ALL',
+        createdBy: 'system',
+        createdByName: 'System',
+        createdAt: DateTime.now(),
+        dueDate: DateTime.now().add(Duration(days: 30)),
+        questions: [],
+        isAIGenerated: false,
+      ),
+      AssessmentData(
+        id: 'PREDEFINED_16',
+        title: 'Logical Reasoning Basics',
+        subject: 'Aptitude',
+        type: 'Quiz',
+        difficulty: 'Easy',
+        totalQuestions: 20,
+        duration: 30,
+        classLevel: 'ALL',
+        createdBy: 'system',
+        createdByName: 'System',
+        createdAt: DateTime.now(),
+        dueDate: DateTime.now().add(Duration(days: 30)),
+        questions: [],
+        isAIGenerated: false,
+      ),
+    ];
+
+    allAssessments.addAll(predefinedAssessments);
+    await saveAssessments();
+    print(
+      '✅ Initialized ${predefinedAssessments.length} pre-defined assessments',
+    );
   }
 
   // Load assessments from local storage

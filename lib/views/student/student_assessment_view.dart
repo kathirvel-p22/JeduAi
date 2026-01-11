@@ -314,6 +314,9 @@ class _StudentAssessmentViewState extends State<StudentAssessmentView>
       setState(() {
         currentUserClass = currentUser.className ?? 'III CSBS';
         isAdminStudent = currentUser.className == 'ALL';
+        print('👤 Current User: ${currentUser.email}');
+        print('📚 Class: $currentUserClass');
+        print('🔑 Is Admin Student: $isAdminStudent');
       });
     }
   }
@@ -325,12 +328,24 @@ class _StudentAssessmentViewState extends State<StudentAssessmentView>
   }
 
   List<AssessmentData> get allAvailableAssessments {
-    // If admin student, show all assessments
+    // If admin student, show all assessments (including pre-defined ones)
     if (isAdminStudent) {
+      print(
+        '✅ Admin Student: Showing ALL ${sharedService.allAssessments.length} assessments',
+      );
       return sharedService.allAssessments;
     }
-    // Otherwise, show only assessments for student's class
-    return sharedService.getAssessmentsForClass(currentUserClass);
+    // Otherwise, show only assessments for student's class (excluding pre-defined system assessments)
+    final classAssessments = sharedService
+        .getAssessmentsForClass(currentUserClass)
+        .where(
+          (a) => !a.id.startsWith('PREDEFINED_'),
+        ) // Hide pre-defined assessments from regular students
+        .toList();
+    print(
+      '📋 Regular Student: Showing ${classAssessments.length} assessments for $currentUserClass (excluding pre-defined)',
+    );
+    return classAssessments;
   }
 
   List<AssessmentData> get filteredAssessments {

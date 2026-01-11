@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/online_class_controller.dart';
 import '../../services/user_service.dart';
+import '../../models/online_class_model.dart';
 
 class StaffOnlineClassCreationView extends StatefulWidget {
   const StaffOnlineClassCreationView({super.key});
@@ -17,9 +19,17 @@ class _StaffOnlineClassCreationViewState
     extends State<StaffOnlineClassCreationView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final OnlineClassController classController = Get.put(
-    OnlineClassController(),
-  );
+
+  // Lazy getter for controller to avoid initialization issues
+  OnlineClassController get classController {
+    try {
+      return Get.find<OnlineClassController>();
+    } catch (e) {
+      print('❌ Error finding OnlineClassController: $e');
+      // Fallback: try to create if not found
+      return Get.put(OnlineClassController());
+    }
+  }
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -35,16 +45,84 @@ class _StaffOnlineClassCreationViewState
   bool autoGenerateLink = true;
 
   final List<String> subjects = [
+    // Core Engineering Subjects
     'Mathematics',
     'Physics',
     'Chemistry',
-    'Biology',
-    'English',
+    'Engineering Graphics',
+    'Engineering Mechanics',
+
+    // Computer Science & IT
     'Computer Science',
+    'Data Structures',
+    'Algorithms',
+    'Database Management',
+    'Operating Systems',
+    'Computer Networks',
+    'Software Engineering',
+    'Web Development',
+    'Mobile App Development',
+    'Artificial Intelligence',
+    'Machine Learning',
+    'Deep Learning',
+    'Data Science',
+    'Big Data Analytics',
+    'Cloud Computing',
+    'Cyber Security',
+    'Internet of Things',
+    'Blockchain Technology',
+
+    // Electronics & Communication
+    'Digital Electronics',
+    'Analog Electronics',
+    'Microprocessors',
+    'Embedded Systems',
+    'Signal Processing',
+    'Communication Systems',
+    'VLSI Design',
+    'Control Systems',
+
+    // Electrical Engineering
+    'Electrical Circuits',
+    'Power Systems',
+    'Electrical Machines',
+    'Power Electronics',
+    'Renewable Energy',
+
+    // Mechanical Engineering
+    'Thermodynamics',
+    'Fluid Mechanics',
+    'Manufacturing Technology',
+    'Machine Design',
+    'Automobile Engineering',
+    'Robotics',
+
+    // Business & Management
+    'Business Management',
+    'Financial Management',
+    'Marketing Management',
+    'Human Resource Management',
+    'Entrepreneurship',
+    'Project Management',
+    'Operations Management',
+
+    // Languages & Communication
+    'English',
+    'Technical Writing',
+    'Communication Skills',
+    'Professional Ethics',
+
+    // General Subjects
+    'Biology',
+    'Environmental Science',
     'History',
+    'Economics',
+    'Statistics',
+    'Research Methodology',
   ];
 
   final List<String> classes = [
+    // School Classes
     'Class 6',
     'Class 7',
     'Class 8',
@@ -52,6 +130,33 @@ class _StaffOnlineClassCreationViewState
     'Class 10',
     'Class 11',
     'Class 12',
+    // College Years - CSBS
+    'I CSBS',
+    'II CSBS',
+    'III CSBS',
+    'IV CSBS',
+    // College Years - CSE
+    'I CSE',
+    'II CSE',
+    'III CSE',
+    'IV CSE',
+    // College Years - ECE
+    'I ECE',
+    'II ECE',
+    'III ECE',
+    'IV ECE',
+    // College Years - EEE
+    'I EEE',
+    'II EEE',
+    'III EEE',
+    'IV EEE',
+    // College Years - MECH
+    'I MECH',
+    'II MECH',
+    'III MECH',
+    'IV MECH',
+    // All Classes
+    'All Classes',
   ];
 
   @override
@@ -64,7 +169,8 @@ class _StaffOnlineClassCreationViewState
   void _generateMeetingLink() {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final randomCode = (timestamp % 1000000).toString().padLeft(6, '0');
-    meetingLinkController.text = 'https://meet.jeduai.com/JED-$randomCode';
+    // Use Jitsi Meet - a FREE, real video conferencing service
+    meetingLinkController.text = 'https://meet.jit.si/JeduAI-$randomCode';
   }
 
   @override
@@ -394,7 +500,13 @@ class _StaffOnlineClassCreationViewState
 
   Widget _buildUpcomingTab() {
     return Obx(() {
-      final upcomingClasses = classController.upcomingClasses;
+      // Force rebuild by accessing the observable
+      final allClasses = classController.allClasses;
+      final upcomingClasses =
+          allClasses.where((c) => c.status == ClassStatus.scheduled).toList()
+            ..sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
+
+      print('📊 Staff Upcoming Tab: ${upcomingClasses.length} classes');
 
       if (upcomingClasses.isEmpty) {
         return Center(
@@ -417,13 +529,20 @@ class _StaffOnlineClassCreationViewState
         );
       }
 
-      return ListView.builder(
-        padding: EdgeInsets.all(16),
-        itemCount: upcomingClasses.length,
-        itemBuilder: (context, index) {
-          final classData = upcomingClasses[index];
-          return _buildRealClassCard(classData);
+      return RefreshIndicator(
+        onRefresh: () async {
+          // Trigger rebuild by calling setState
+          setState(() {});
+          await Future.delayed(Duration(milliseconds: 300));
         },
+        child: ListView.builder(
+          padding: EdgeInsets.all(16),
+          itemCount: upcomingClasses.length,
+          itemBuilder: (context, index) {
+            final classData = upcomingClasses[index];
+            return _buildRealClassCard(classData);
+          },
+        ),
       );
     });
   }
@@ -585,14 +704,44 @@ class _StaffOnlineClassCreationViewState
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: canStart
-                        ? () {
-                            Get.snackbar(
-                              'Starting Class',
-                              'Opening ${classData.title}...',
-                              backgroundColor: Colors.green,
-                              colorText: Colors.white,
-                            );
-                            // In production: launch meeting link
+                        ? () async {
+                            try {
+                              final uri = Uri.parse(classData.meetingLink);
+                              final canLaunch = await canLaunchUrl(uri);
+
+                              if (canLaunch) {
+                                await launchUrl(
+                                  uri,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                                Get.snackbar(
+                                  'Starting Class',
+                                  'Opening ${classData.title}...',
+                                  backgroundColor: Colors.green,
+                                  colorText: Colors.white,
+                                );
+                              } else {
+                                Clipboard.setData(
+                                  ClipboardData(text: classData.meetingLink),
+                                );
+                                Get.snackbar(
+                                  'Link Copied',
+                                  'Meeting link copied. Please open it manually.',
+                                  backgroundColor: Colors.orange,
+                                  colorText: Colors.white,
+                                );
+                              }
+                            } catch (e) {
+                              Clipboard.setData(
+                                ClipboardData(text: classData.meetingLink),
+                              );
+                              Get.snackbar(
+                                'Link Copied',
+                                'Meeting link copied to clipboard',
+                                backgroundColor: Colors.orange,
+                                colorText: Colors.white,
+                              );
+                            }
                           }
                         : null,
                     icon: Icon(Icons.video_call, size: 18),
@@ -879,6 +1028,7 @@ class _StaffOnlineClassCreationViewState
             ? 'Class description and topics...'
             : descriptionController.text,
         classCode: classCode,
+        targetClass: selectedClass,
         maxStudents: 50,
       );
 

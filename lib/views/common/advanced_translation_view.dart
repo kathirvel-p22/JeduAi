@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../services/gemini_translation_service.dart';
 import '../../services/enhanced_translation_service.dart';
+import '../student/media_translation_view.dart';
 
 class AdvancedTranslationView extends StatefulWidget {
   const AdvancedTranslationView({super.key});
@@ -73,7 +74,7 @@ class _AdvancedTranslationViewState extends State<AdvancedTranslationView>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -98,11 +99,24 @@ class _AdvancedTranslationViewState extends State<AdvancedTranslationView>
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
+          indicatorColor: Colors.white,
+          indicatorWeight: 3,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          labelStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.normal,
+          ),
           tabs: const [
-            Tab(icon: Icon(Icons.translate), text: 'Translate'),
-            Tab(icon: Icon(Icons.auto_awesome), text: 'Features'),
-            Tab(icon: Icon(Icons.compare), text: 'Compare'),
-            Tab(icon: Icon(Icons.tips_and_updates), text: 'Tips'),
+            Tab(icon: Icon(Icons.translate, size: 24), text: 'Text'),
+            Tab(icon: Icon(Icons.upload_file, size: 24), text: 'File Upload'),
+            Tab(icon: Icon(Icons.auto_awesome, size: 24), text: 'Features'),
+            Tab(icon: Icon(Icons.compare, size: 24), text: 'Compare'),
+            Tab(icon: Icon(Icons.tips_and_updates, size: 24), text: 'Tips'),
           ],
         ),
       ),
@@ -110,6 +124,7 @@ class _AdvancedTranslationViewState extends State<AdvancedTranslationView>
         controller: _tabController,
         children: [
           _buildTranslateTab(),
+          const MediaTranslationView(),
           _buildFeaturesTab(),
           _buildCompareTab(),
           _buildTipsTab(),

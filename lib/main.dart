@@ -9,9 +9,11 @@ import 'services/user_service.dart';
 import 'services/notification_service.dart';
 import 'services/online_class_service.dart';
 import 'services/gemini_translation_service.dart';
+import 'controllers/online_class_controller.dart';
 import 'services/enhanced_translation_service.dart';
 import 'services/enhanced_ai_tutor_service.dart';
 import 'services/shared_assessment_service.dart';
+import 'services/media_translation_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +44,10 @@ void main() async {
   Get.put(OnlineClassService(), permanent: true);
   Get.put(DatabaseService(), permanent: true);
 
+  // Initialize controllers
+  Get.put(OnlineClassController(), permanent: true);
+  print('✅ Online Class Controller initialized');
+
   // Initialize translation services
   Get.put(GeminiTranslationService(), permanent: true);
   Get.put(EnhancedTranslationService(), permanent: true);
@@ -54,6 +60,10 @@ void main() async {
   // Initialize Shared Assessment Service
   Get.put(SharedAssessmentService(), permanent: true);
   print('✅ Shared Assessment Service initialized');
+
+  // Initialize Media Translation Service
+  Get.put(MediaTranslationService(), permanent: true);
+  print('✅ Media Translation Service initialized');
 
   // Initialize database with automatic cleanup
   try {

@@ -62,7 +62,7 @@ class UserDataService {
   factory UserDataService() => _instance;
   UserDataService._internal();
 
-  // Predefined users for VSB Engineering College - III CSBS
+  // Dynamic users map (can be modified at runtime)
   static final Map<String, UserData> _predefinedUsers = {
     // Students
     'kathirvel@gmail.com': UserData(
@@ -312,5 +312,137 @@ class UserDataService {
     );
 
     return await updateUserProfile(updatedUser);
+  }
+
+  // Add new student
+  Future<bool> addStudent({
+    required String name,
+    required String email,
+    required String department,
+    required String className,
+    required String year,
+    String? phone,
+    String? rollNumber,
+  }) async {
+    try {
+      // Check if email already exists
+      if (emailExists(email)) {
+        return false;
+      }
+
+      // Generate unique ID
+      final id = 'STU${DateTime.now().millisecondsSinceEpoch % 10000}';
+
+      // Create new student
+      final newStudent = UserData(
+        id: id,
+        name: name,
+        email: email.toLowerCase(),
+        role: 'student',
+        department: department,
+        className: className,
+        year: year,
+        college: 'VSB Engineering College',
+        phone: phone,
+        rollNumber: rollNumber ?? 'ROLL$id',
+      );
+
+      // Add to map
+      _predefinedUsers[email.toLowerCase()] = newStudent;
+
+      // Save to storage
+      await _saveUsersToStorage();
+
+      return true;
+    } catch (e) {
+      print('Error adding student: $e');
+      return false;
+    }
+  }
+
+  // Add new staff
+  Future<bool> addStaff({
+    required String name,
+    required String email,
+    required String department,
+    required String subject,
+    String? phone,
+  }) async {
+    try {
+      // Check if email already exists
+      if (emailExists(email)) {
+        return false;
+      }
+
+      // Generate unique ID
+      final id = 'STAFF${DateTime.now().millisecondsSinceEpoch % 10000}';
+
+      // Create new staff
+      final newStaff = UserData(
+        id: id,
+        name: name,
+        email: email.toLowerCase(),
+        role: 'staff',
+        department: department,
+        college: 'VSB Engineering College',
+        subject: subject,
+        phone: phone,
+      );
+
+      // Add to map
+      _predefinedUsers[email.toLowerCase()] = newStaff;
+
+      // Save to storage
+      await _saveUsersToStorage();
+
+      return true;
+    } catch (e) {
+      print('Error adding staff: $e');
+      return false;
+    }
+  }
+
+  // Delete user
+  Future<bool> deleteUser(String email) async {
+    try {
+      _predefinedUsers.remove(email.toLowerCase());
+      await _saveUsersToStorage();
+      return true;
+    } catch (e) {
+      print('Error deleting user: $e');
+      return false;
+    }
+  }
+
+  // Save users to storage
+  Future<void> _saveUsersToStorage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final usersJson = _predefinedUsers.values
+          .map((user) => user.toJson())
+          .toList();
+      await prefs.setString('app_users', jsonEncode(usersJson));
+      print('💾 Saved ${_predefinedUsers.length} users to storage');
+    } catch (e) {
+      print('Error saving users: $e');
+    }
+  }
+
+  // Load users from storage
+  Future<void> loadUsersFromStorage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final usersString = prefs.getString('app_users');
+      if (usersString != null && usersString.isNotEmpty) {
+        final List<dynamic> usersJson = jsonDecode(usersString);
+        for (var json in usersJson) {
+          final user = UserData.fromJson(json);
+          _predefinedUsers[user.email.toLowerCase()] = user;
+        }
+        print('📂 Loaded ${_predefinedUsers.length} users from storage');
+      }
+    } catch (e) {
+      print('Error loading users: $e');
+    }
   }
 }

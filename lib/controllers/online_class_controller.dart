@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../services/online_class_service.dart';
 import '../models/online_class_model.dart';
 
 class OnlineClassController extends GetxController {
-  final OnlineClassService _classService = Get.find<OnlineClassService>();
+  // Lazy initialization to avoid dependency issues
+  OnlineClassService get _classService => Get.find<OnlineClassService>();
 
   // Getters for reactive data
   List<OnlineClass> get allClasses => _classService.allClasses;
@@ -24,9 +26,11 @@ class OnlineClassController extends GetxController {
     required String meetingLink,
     required String description,
     required String classCode,
+    required String targetClass,
     int maxStudents = 50,
   }) async {
     try {
+      print('🔄 Controller: Creating class...');
       final newClass = await _classService.createClass(
         title: title,
         subject: subject,
@@ -37,11 +41,25 @@ class OnlineClassController extends GetxController {
         meetingLink: meetingLink,
         description: description,
         classCode: classCode,
+        targetClass: targetClass,
         maxStudents: maxStudents,
       );
+      print('✅ Controller: Class created successfully');
+
+      // Force refresh of all lists
+      _classService.allClasses.refresh();
+      _classService.upcomingClasses.refresh();
+
       return newClass;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to create class: ${e.toString()}');
+      print('❌ Controller Error: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to create class: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
       return null;
     }
   }

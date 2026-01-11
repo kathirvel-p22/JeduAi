@@ -1,0 +1,54 @@
+🔑 GEMINI API KEY SETUP FOR ADVANCED VIDEO TRANSLATION
+========================================================
+
+STEP 1: Get Your Gemini API Key
+--------------------------------
+1. Go to: https://makersuite.google.com/app/apikey
+2. Sign in with your Google account
+3. Click "Create API Key"
+4. Copy the generated API key
+
+STEP 2: Add API Key to Your App
+--------------------------------
+Open: lib/services/real_time_translation_service.dart
+
+Find line 9:
+  static const String apiKey = 'YOUR_GEMINI_API_KEY_HERE';
+
+Replace 'YOUR_GEMINI_API_KEY_HERE' with your actual API key:
+  static const String apiKey = 'AIzaSyAbc123...your-actual-key';
+
+STEP 3: Test the Translation
+-----------------------------
+1. Run the app
+2. Go to Media Translation section
+3. Upload a video (any language)
+4. Select source and target languages
+5. Enable "Advanced AI Translation" toggle
+6. Click "AI Translate"
+7. Watch your video with AI-generated subtitles!
+
+SUPPORTED LANGUAGES (ANY to ANY):
+----------------------------------
+✅ English, Tamil, Hindi, Spanish
+✅ Telugu, Kannada, Malayalam, Bengali
+✅ Marathi, Gujarati, Punjabi, Urdu
+✅ French, German, Chinese, Japanese
+✅ Korean, Arabic, Portuguese, Russian
+
+FEATURES:
+---------
+✅ Real-time speech recognition
+✅ AI-powered translation
+✅ Automatic subtitle generation
+✅ Voice-over in target language
+✅ Works with songs, lectures, videos
+
+EXAMPLE USE CASES:
+------------------
+• Malayalam song → English subtitles
+• Hindi lecture → Kannada subtitles
+• Tamil video → Spanish subtitles
+• English tutorial → Telugu subtitles
+
+That's it! Your advanced AI translation is ready! 🎉

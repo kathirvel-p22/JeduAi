@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../services/shared_assessment_service.dart';
 
 class Question {
@@ -70,7 +69,7 @@ class _TakeAssessmentViewState extends State<TakeAssessmentView> {
       print(
         '✅ Loading ${assessment.questions.length} questions from assessment',
       );
-      questions = (assessment.questions as List).map((q) {
+      questions = (assessment.questions).map((q) {
         return Question(
           id: q['id']?.toString() ?? '',
           question: q['question']?.toString() ?? 'Question',
@@ -955,8 +954,8 @@ class _TakeAssessmentViewState extends State<TakeAssessmentView> {
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text('Exit'),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: Text('Exit'),
               ),
             ],
           ),
@@ -1221,8 +1220,8 @@ class _TakeAssessmentViewState extends State<TakeAssessmentView> {
               Navigator.pop(context);
               _submitAssessment();
             },
-            child: Text('Submit'),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: Text('Submit'),
           ),
         ],
       ),
