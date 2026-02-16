@@ -11,18 +11,24 @@ An AI-powered educational platform built with Flutter, featuring intelligent ass
 
 ### 🤖 AI-Powered Features
 - **AI Assessment Generator**: Automatically creates quizzes with questions, options, and explanations using Gemini 2.5 Flash
-- **AI Tutor**: Real-time conversational learning assistant
-- **Smart Translation**: 100+ language support for all content
+- **AI Tutor**: Real-time conversational learning assistant with multi-language support
+- **Smart Translation**: 100+ language support for all content (Admin, Staff, Student portals)
+- **Video Translation**: Real-time video translation with AI-generated subtitles (20+ languages)
+  - Malayalam ↔ English, Hindi ↔ Kannada, Tamil ↔ Hindi, etc.
+  - Three modes: Basic, Advanced AI (Gemini), Full Pipeline (Whisper + NLLB)
+  - Voice-over generation with Text-to-Speech
 - **Intelligent Recommendations**: Personalized learning paths
 
 ### 👨‍🎓 Student Portal
 - Dashboard with progress tracking
 - AI-generated assessments (class-specific)
 - Interactive learning modules
-- Video player with controls
-- Content reader
+- Video player with controls and subtitles
+- **Media Translation**: Upload videos/audio and translate to any language
+- Content reader with translation
 - Assessment history and scores
-- Multi-language content translation
+- Multi-language content translation (All UI elements)
+- AI Tutor chat in any language
 
 ### 👨‍🏫 Staff Portal
 - Assessment creation (manual & AI-generated)
@@ -31,12 +37,42 @@ An AI-powered educational platform built with Flutter, featuring intelligent ass
 - Real-time assessment preview
 - Assessment analytics
 - Export assessment data
+- Multi-language interface support
+- Translation tools for educational content
 
 ### 👨‍💼 Admin Portal
 - Full platform oversight
 - User management
 - System analytics
 - Platform configuration
+- Multi-language admin interface
+- Translation management
+
+### 🎥 Video Translation Features
+- **Upload & Translate**: Upload any video and translate to 20+ languages
+- **Real-time Processing**: AI-powered transcription and translation
+- **Subtitle Generation**: Automatic subtitle creation with timing
+- **Voice-over**: Text-to-Speech in target language
+- **Supported Languages**: English, Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali, Marathi, Gujarati, Punjabi, Urdu, Spanish, French, German, Chinese, Japanese, Korean, Arabic, Portuguese, Russian
+
+## 📥 Download APK
+
+### Latest Release
+Download the latest Android APK:
+
+**[📱 Download JeduAI APK (v1.0.0)](https://github.com/kathirvel-p22/JeduAi/releases/latest/download/jeduai-app.apk)**
+
+Or build from source:
+```bash
+flutter build apk --release
+```
+APK will be available at: `build/app/outputs/flutter-apk/app-release.apk`
+
+### Installation Instructions
+1. Download the APK file
+2. Enable "Install from Unknown Sources" in your Android settings
+3. Open the APK file and install
+4. Launch JeduAI app
 
 ## 🚀 Quick Start
 
@@ -151,10 +187,12 @@ static const String apiKey = 'YOUR_API_KEY_HERE';
 
 - **Frontend**: Flutter & Dart
 - **AI**: Google Gemini 2.5 Flash
+- **Translation**: Gemini AI, Whisper STT, NLLB-200, Piper TTS
 - **State Management**: GetX
 - **Local Storage**: SharedPreferences
 - **HTTP Client**: http package
 - **UI Components**: Material Design 3
+- **Video Processing**: video_player, flutter_tts
 
 ## 📚 Documentation
 
@@ -163,6 +201,31 @@ static const String apiKey = 'YOUR_API_KEY_HERE';
 - [AI Assessment Generator](AI_ASSESSMENT_GENERATOR_COMPLETE.md)
 - [Shared Assessment System](SHARED_ASSESSMENT_SYSTEM.md)
 - [Complete System Summary](COMPLETE_SYSTEM_SUMMARY.md)
+- [Video Translation Guide](REAL_TIME_VIDEO_TRANSLATION_GUIDE.md)
+- [Media Translation Feature](MEDIA_TRANSLATION_FEATURE.md)
+
+## 🌐 Translation Features
+
+### UI Translation (All Portals)
+All user interfaces support 100+ languages:
+- **Admin Portal**: Complete translation of all admin features
+- **Staff Portal**: All staff tools and interfaces
+- **Student Portal**: Full student experience in any language
+- **AI Tutor**: Chat in your preferred language
+- **Assessments**: Questions and answers in multiple languages
+
+### Video/Audio Translation
+Upload any video or audio file and translate:
+1. **Upload**: Select video/audio file (MP4, AVI, MOV, MP3, WAV, etc.)
+2. **Select Languages**: Choose source and target language
+3. **Translation Mode**:
+   - **Basic**: Quick translation with predefined content
+   - **Advanced AI**: Real Gemini AI translation based on video content
+   - **Full Pipeline**: Whisper STT → NLLB Translation → Piper TTS
+4. **Output**: Translated video with subtitles and voice-over
+
+### Supported Languages
+English, Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali, Marathi, Gujarati, Punjabi, Urdu, Spanish, French, German, Chinese, Japanese, Korean, Arabic, Portuguese, Russian, and 80+ more
 
 ## 🤝 Contributing
 
