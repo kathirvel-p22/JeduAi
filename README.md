@@ -60,9 +60,11 @@ An AI-powered educational platform built with Flutter, featuring intelligent ass
 ### Latest Release
 Download the Android APK and install on your device:
 
-**[📱 Download JeduAI APK (v1.0.0)](https://github.com/kathirvel-p22/JeduAi/releases/download/v1.0.0/jeduai-app-v1.0.0.apk)**
+**[📱 Download JeduAI APK (v1.0.0) - Direct Download](https://drive.google.com/uc?export=download&id=1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz)**
 
-> **Note**: If the link doesn't work, go to [Releases](https://github.com/kathirvel-p22/JeduAi/releases) and download the latest APK.
+**Alternative:** [Open in Google Drive](https://drive.google.com/file/d/1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz/view?usp=sharing) (tap 3 dots → Download)
+
+> **📱 Mobile Tip**: If the link shows a preview, tap the **3 dots menu (⋮)** → **"Download"**
 
 ### Installation Instructions
 1. Download the APK file (160 MB)
@@ -275,22 +277,88 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 
 ### Android APK Download
 
-**[⬇️ Click Here to Download JeduAI APK (v1.0.0)](https://drive.google.com/file/d/1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz/view?usp=sharing)**
+**[⬇️ Click Here to Download JeduAI APK (v1.0.0)](https://drive.google.com/uc?export=download&id=1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz)**
+
+**Alternative Link (if above doesn't work):** [Open in Google Drive](https://drive.google.com/file/d/1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz/view?usp=sharing)
 
 **Size**: 160 MB | **Version**: 1.0.0 | **Platform**: Android 5.0+
 
-### Quick Install Guide
-1. Click the download link above
-2. Click "Download" on Google Drive
-3. Open Settings → Security → Enable "Install from Unknown Sources"
-4. Open the downloaded APK file
-5. Tap "Install"
-6. Launch JeduAI and login with demo credentials
+> **📱 Mobile Users**: If the link opens a preview page, tap the **3 dots menu (⋮)** at top-right → Select **"Download"**
 
-### Demo Login Credentials
-- **Student**: `kathirvel@gmail.com` (any password)
-- **Staff**: `vijayakumar@vsb.edu` (any password)
-- **Admin**: `admin@vsb.edu` (any password)
+### 📋 Step-by-Step Installation Guide
+
+#### Step 1: Download the APK
+
+**On Android Phone:**
+1. Click the **[Download Link](https://drive.google.com/uc?export=download&id=1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz)** above
+2. If it opens a preview page instead:
+   - Tap the **3 dots menu (⋮)** at the top-right corner
+   - Select **"Download"** from the menu
+3. Or use the **Alternative Link** and tap the download icon (⬇️)
+4. If prompted "Can't scan for viruses", tap **"Download anyway"** (the file is safe)
+5. Wait for download to complete (160 MB, takes 2-5 minutes depending on your internet speed)
+6. You'll see a notification when download is complete
+
+**On PC/Laptop:**
+1. Click the download link
+2. Click the **"Download"** button (⬇️ icon) at top-right
+3. Transfer the APK file to your Android phone via USB or cloud storage
+
+#### Step 2: Enable Installation from Unknown Sources
+**For Android 8.0 and above:**
+1. Go to **Settings** on your Android device
+2. Tap **Apps & notifications** (or **Apps**)
+3. Tap **Special app access** (or **Advanced**)
+4. Tap **Install unknown apps**
+5. Select your **browser** (Chrome, Firefox, etc.)
+6. Toggle **"Allow from this source"** to ON
+
+**For Android 7.0 and below:**
+1. Go to **Settings**
+2. Tap **Security**
+3. Toggle **"Unknown sources"** to ON
+4. Tap **OK** when prompted
+
+#### Step 3: Install the APK
+1. Open your **Downloads** folder or notification panel
+2. Tap on **jeduai-app-v1.0.0-debug.apk**
+3. Tap **"Install"** button
+4. Wait for installation to complete (30-60 seconds)
+5. Tap **"Open"** or find the **JeduAI** app icon on your home screen
+
+#### Step 4: Launch and Login
+1. Open the **JeduAI** app
+2. You'll see the login screen
+3. Choose your role and login with demo credentials (see below)
+4. Start exploring all features!
+
+#### 🔐 Demo Login Credentials
+**Student Access:**
+- Email: `kathirvel@gmail.com`
+- Password: Any password (e.g., `123456`)
+
+**Staff Access:**
+- Email: `vijayakumar@vsb.edu`
+- Password: Any password
+
+**Admin Access:**
+- Email: `admin@vsb.edu`
+- Password: Any password
+
+#### ⚠️ Troubleshooting
+- **"Can't download"**: Try using Chrome browser or download on PC and transfer to phone
+- **"App not installed"**: Make sure you enabled "Unknown sources" in Settings
+- **"Parse error"**: Re-download the APK, the file may be corrupted
+- **App crashes**: Make sure your Android version is 5.0 or higher
+
+### 🎥 Video Tutorial
+Watch how to download and install: [Coming Soon]
+
+### 📸 Visual Guide
+1. **Google Drive Page** → Click "Download" button (⬇️)
+2. **Settings** → Security → Enable "Unknown Sources"
+3. **Downloads** → Tap APK file → Tap "Install"
+4. **JeduAI App** → Login → Explore Features!
 
 ### ✅ All Features Working
 - ✅ AI Tutor (Multi-language chat)
