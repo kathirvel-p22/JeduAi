@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../views/auth/login_view.dart';
+import '../views/auth/signup_view.dart';
 import '../views/student/student_dashboard_view.dart';
 import '../views/student/student_profile_view.dart';
 import '../views/staff/staff_dashboard_view.dart';
@@ -21,6 +22,15 @@ class AppRoutes {
     GetPage(
       name: '/login',
       page: () => LoginView(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<UserService>(() => UserService());
+        Get.lazyPut<NotificationService>(() => NotificationService());
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
+    ),
+    GetPage(
+      name: '/signup',
+      page: () => SignupView(),
       binding: BindingsBuilder(() {
         Get.lazyPut<UserService>(() => UserService());
         Get.lazyPut<NotificationService>(() => NotificationService());

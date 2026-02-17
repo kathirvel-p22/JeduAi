@@ -15,6 +15,13 @@ An AI-powered educational platform built with Flutter, featuring intelligent ass
 
 ## 🌟 Features
 
+### 🔐 Authentication & User Management
+- **User Registration**: Sign up with email, password, and role selection
+- **Secure Login**: Firebase Authentication with email/password
+- **Role-Based Access**: Separate portals for Students, Staff, and Admin
+- **User Profiles**: Stored in Firestore with real-time sync
+- **Password Reset**: (Coming soon)
+
 ### 🤖 AI-Powered Features
 - **AI Assessment Generator**: Automatically creates quizzes with questions, options, and explanations using Gemini 2.5 Flash
 - **AI Tutor**: Real-time conversational learning assistant with multi-language support
@@ -121,6 +128,9 @@ flutter run
 
 ## 🔑 Demo Credentials
 
+### For Testing Without Firebase Setup
+If you haven't set up Firebase yet, the app has a fallback authentication system:
+
 ### Students
 - **Email**: `kathirvel@gmail.com` | **Password**: Any password
 - **Email**: `student@jeduai.com` | **Password**: Any password (Full access)
@@ -174,6 +184,20 @@ jeduai_app1/
 ```
 
 ## 🔧 Configuration
+
+### Firebase Setup (Required for Authentication)
+The app uses Firebase for real-time authentication and user management. Follow these steps:
+
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+2. Enable Email/Password authentication
+3. Set up Firestore Database
+4. Run FlutterFire CLI to configure:
+```bash
+dart pub global activate flutterfire_cli
+flutterfire configure
+```
+
+For detailed instructions, see [FIREBASE_SETUP_GUIDE.md](FIREBASE_SETUP_GUIDE.md)
 
 ### Gemini API Setup
 1. Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)

@@ -184,50 +184,60 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
                                   return;
                                 }
 
-                                // Use UserDataService for authentication
-                                final userService = UserDataService();
-                                final user = await userService.validateLogin(
-                                  emailController.text,
-                                  passwordController.text,
-                                );
+                                // Try Firebase authentication first
+                                try {
+                                  await authController.login(
+                                    emailController.text,
+                                    passwordController.text,
+                                    selectedRole,
+                                  );
+                                } catch (e) {
+                                  // If Firebase fails, try fallback authentication
+                                  print('Firebase auth failed, trying fallback: $e');
+                                  final userService = UserDataService();
+                                  final user = await userService.validateLogin(
+                                    emailController.text,
+                                    passwordController.text,
+                                  );
 
-                                if (user != null) {
-                                  // Check if role matches
-                                  if (user.role.toLowerCase() !=
-                                      selectedRole.toLowerCase()) {
+                                  if (user != null) {
+                                    // Check if role matches
+                                    if (user.role.toLowerCase() !=
+                                        selectedRole.toLowerCase()) {
+                                      Get.snackbar(
+                                        'Error',
+                                        'Invalid credentials for selected role',
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
+                                      );
+                                      return;
+                                    }
+
+                                    // Show welcome message
+                                    Get.snackbar(
+                                      'Welcome!',
+                                      'Hello ${user.name}',
+                                      backgroundColor: Colors.green,
+                                      colorText: Colors.white,
+                                      duration: Duration(seconds: 2),
+                                    );
+
+                                    // Navigate based on role
+                                    if (user.role == 'student') {
+                                      Get.offNamed('/student/dashboard');
+                                    } else if (user.role == 'staff') {
+                                      Get.offNamed('/staff/dashboard');
+                                    } else if (user.role == 'admin') {
+                                      Get.offNamed('/admin/dashboard');
+                                    }
+                                  } else {
                                     Get.snackbar(
                                       'Error',
-                                      'Invalid credentials for selected role',
+                                      'Invalid email or password',
                                       backgroundColor: Colors.red,
                                       colorText: Colors.white,
                                     );
-                                    return;
                                   }
-
-                                  // Show welcome message
-                                  Get.snackbar(
-                                    'Welcome!',
-                                    'Hello ${user.name}',
-                                    backgroundColor: Colors.green,
-                                    colorText: Colors.white,
-                                    duration: Duration(seconds: 2),
-                                  );
-
-                                  // Navigate based on role
-                                  if (user.role == 'student') {
-                                    Get.offNamed('/student/dashboard');
-                                  } else if (user.role == 'staff') {
-                                    Get.offNamed('/staff/dashboard');
-                                  } else if (user.role == 'admin') {
-                                    Get.offNamed('/admin/dashboard');
-                                  }
-                                } else {
-                                  Get.snackbar(
-                                    'Error',
-                                    'Invalid email or password',
-                                    backgroundColor: Colors.red,
-                                    colorText: Colors.white,
-                                  );
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -247,6 +257,32 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
                           ),
                   ),
                   SizedBox(height: 20),
+                  
+                  // Sign Up Link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account? ",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.toNamed('/signup');
+                        },
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  
                   // Quick login hints
                   Container(
                     padding: EdgeInsets.all(16),

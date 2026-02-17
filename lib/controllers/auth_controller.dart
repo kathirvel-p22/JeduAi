@@ -134,4 +134,82 @@ class AuthController extends GetxController {
     await _auth.signOut();
     Get.offNamed('/login');
   }
+
+  /// Sign up with email and password
+  Future<bool> signupWithEmailPassword({
+    required String name,
+    required String email,
+    required String password,
+    required String role,
+  }) async {
+    isLoading.value = true;
+    try {
+      print('📝 Creating account for: $email with role: $role');
+
+      // Create user with Firebase Auth
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      print('✅ Firebase Auth account created: ${userCredential.user!.uid}');
+
+      // Update display name
+      await userCredential.user!.updateDisplayName(name);
+
+      // Create user document in Firestore
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'name': name,
+        'email': email,
+        'role': role,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      print('✅ User document created in Firestore');
+
+      Get.snackbar(
+        'Success',
+        'Account created successfully!',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Get.theme.colorScheme.primary.withAlpha(51),
+        duration: Duration(seconds: 2),
+      );
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print('❌ Firebase Auth Error: ${e.code} - ${e.message}');
+      String errorMessage = 'An error occurred';
+      if (e.code == 'weak-password') {
+        errorMessage = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'An account already exists for this email.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'Invalid email address.';
+      } else {
+        errorMessage = e.message ?? 'Signup failed';
+      }
+      Get.snackbar(
+        'Signup Failed',
+        errorMessage,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Get.theme.colorScheme.error.withAlpha(51),
+        duration: Duration(seconds: 3),
+      );
+      return false;
+    } catch (e) {
+      print('❌ Unexpected error: $e');
+      Get.snackbar(
+        'Error',
+        'An unexpected error occurred: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Get.theme.colorScheme.error.withAlpha(51),
+        duration: Duration(seconds: 3),
+      );
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }
