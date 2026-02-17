@@ -21,18 +21,62 @@ class AuthController extends GetxController {
 
       print('✅ Firebase Auth successful for user: ${userCredential.user!.uid}');
 
-      // Try to fetch user role from Firestore
+      String uid = userCredential.user!.uid;
+      String normalizedRole = role.toLowerCase();
+
+      // Try to fetch user from role-specific collection first
+      DocumentSnapshot? roleDoc;
+      try {
+        if (normalizedRole == 'student') {
+          roleDoc = await _firestore.collection('students').doc(uid).get();
+        } else if (normalizedRole == 'staff') {
+          roleDoc = await _firestore.collection('staff').doc(uid).get();
+        } else if (normalizedRole == 'admin') {
+          roleDoc = await _firestore.collection('admins').doc(uid).get();
+        }
+
+        if (roleDoc != null && roleDoc.exists) {
+          String userRole = roleDoc.get('role') ?? role;
+          print('📋 Role from ${normalizedRole}s collection: $userRole');
+
+          // Verify role matches
+          if (userRole.toLowerCase() != normalizedRole) {
+            await _auth.signOut();
+            Get.snackbar(
+              'Error',
+              'Invalid role selected. Your account is registered as $userRole.',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Get.theme.colorScheme.error.withAlpha(26),
+              duration: Duration(seconds: 3),
+            );
+            isLoading.value = false;
+            return;
+          }
+
+          // Update last login for admins
+          if (normalizedRole == 'admin') {
+            await _firestore.collection('admins').doc(uid).update({
+              'lastLogin': FieldValue.serverTimestamp(),
+            });
+          }
+
+          print('🚀 Navigating to dashboard for role: $userRole');
+          _navigateBasedOnRole(userRole);
+          return;
+        }
+      } catch (e) {
+        print('⚠️ Role-specific collection error: $e');
+      }
+
+      // Fallback: Try main users collection
       try {
         DocumentSnapshot userDoc = await _firestore
             .collection('users')
-            .doc(userCredential.user!.uid)
+            .doc(uid)
             .get();
 
         if (!userDoc.exists) {
-          // If user document doesn't exist, use the selected role
-          print(
-            '⚠️ User document not found in Firestore. Using selected role: $role',
-          );
+          print('⚠️ User document not found. Using selected role: $role');
           Get.snackbar(
             'Info',
             'User profile not found. Using selected role.',
@@ -43,29 +87,24 @@ class AuthController extends GetxController {
           return;
         }
 
-        // Get the role from Firestore
         String userRole = userDoc.get('role') ?? role;
-        print('📋 Role from Firestore: $userRole');
+        print('📋 Role from users collection: $userRole');
 
-        // Verify if the selected role matches the stored role
-        if (userRole.toLowerCase() != role.toLowerCase()) {
+        if (userRole.toLowerCase() != normalizedRole) {
           await _auth.signOut();
           Get.snackbar(
             'Error',
             'Invalid role selected. Your account is registered as $userRole.',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Get.theme.colorScheme.error.withOpacity(0.1),
+            backgroundColor: Get.theme.colorScheme.error.withAlpha(26),
             duration: Duration(seconds: 3),
           );
           isLoading.value = false;
           return;
         }
 
-        // Navigate based on verified role
-        print('🚀 Navigating to dashboard for role: $userRole');
         _navigateBasedOnRole(userRole);
       } catch (firestoreError) {
-        // If Firestore fails, still allow login with selected role
         print('⚠️ Firestore error: $firestoreError');
         print('📍 Proceeding with selected role: $role');
         Get.snackbar(
@@ -94,7 +133,7 @@ class AuthController extends GetxController {
         'Login Failed',
         errorMessage,
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Get.theme.colorScheme.error.withOpacity(0.1),
+        backgroundColor: Get.theme.colorScheme.error.withAlpha(26),
         duration: Duration(seconds: 3),
       );
     } catch (e) {
@@ -103,7 +142,7 @@ class AuthController extends GetxController {
         'Error',
         'An unexpected error occurred: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Get.theme.colorScheme.error.withOpacity(0.1),
+        backgroundColor: Get.theme.colorScheme.error.withAlpha(26),
         duration: Duration(seconds: 3),
       );
     } finally {
@@ -157,26 +196,54 @@ class AuthController extends GetxController {
       // Update display name
       await userCredential.user!.updateDisplayName(name);
 
-      // Create user document in Firestore
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'uid': userCredential.user!.uid,
+      String uid = userCredential.user!.uid;
+      Map<String, dynamic> userData = {
+        'uid': uid,
         'name': name,
         'email': email,
         'role': role,
         'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      };
 
-      print('✅ User document created in Firestore');
+      // Create user document in main users collection
+      await _firestore.collection('users').doc(uid).set(userData);
+      print('✅ User document created in users collection');
 
-      Get.snackbar(
-        'Success',
-        'Account created successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Get.theme.colorScheme.primary.withAlpha(51),
-        duration: Duration(seconds: 2),
-      );
+      // Create role-specific document in separate collections
+      if (role == 'student') {
+        await _firestore.collection('students').doc(uid).set({
+          ...userData,
+          'enrolledCourses': [],
+          'completedAssessments': [],
+          'totalScore': 0,
+          'averageScore': 0.0,
+          'department': '',
+          'year': '',
+          'section': '',
+        });
+        print('✅ Student profile created in students collection');
+      } else if (role == 'staff') {
+        await _firestore.collection('staff').doc(uid).set({
+          ...userData,
+          'department': '',
+          'designation': '',
+          'subjects': [],
+          'classesAssigned': [],
+          'totalStudents': 0,
+        });
+        print('✅ Staff profile created in staff collection');
+      } else if (role == 'admin') {
+        await _firestore.collection('admins').doc(uid).set({
+          ...userData,
+          'permissions': ['all'],
+          'managedDepartments': [],
+          'lastLogin': FieldValue.serverTimestamp(),
+        });
+        print('✅ Admin profile created in admins collection');
+      }
 
+      print('🎉 Account creation successful!');
       return true;
     } on FirebaseAuthException catch (e) {
       print('❌ Firebase Auth Error: ${e.code} - ${e.message}');

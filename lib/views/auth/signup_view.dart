@@ -334,14 +334,80 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
     );
 
     if (success) {
-      Get.snackbar(
-        'Success',
-        'Account created successfully! Please login.',
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: Duration(seconds: 3),
+      // Show success dialog
+      Get.dialog(
+        AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green, size: 32),
+              SizedBox(width: 10),
+              Text('Success!'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Your account has been created successfully!',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 15),
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.green.withAlpha(26),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '✓ Account created',
+                      style: TextStyle(color: Colors.green[700]),
+                    ),
+                    Text(
+                      '✓ ${selectedRole} profile set up',
+                      style: TextStyle(color: Colors.green[700]),
+                    ),
+                    Text(
+                      '✓ Database initialized',
+                      style: TextStyle(color: Colors.green[700]),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 15),
+              Text(
+                'You can now login with your credentials:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text('Email: ${emailController.text}'),
+              Text('Role: $selectedRole'),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Get.back(); // Close dialog
+                Get.back(); // Go back to login
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Go to Login', style: TextStyle(fontSize: 16)),
+            ),
+          ],
+        ),
+        barrierDismissible: false,
       );
-      Get.back(); // Go back to login
     }
   }
 }
