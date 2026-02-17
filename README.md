@@ -58,21 +58,29 @@ An AI-powered educational platform built with Flutter, featuring intelligent ass
 ## 📥 Download APK
 
 ### Latest Release
-Download the latest Android APK:
+Download the Android APK and install on your device:
 
-**[📱 Download JeduAI APK (v1.0.0)](https://github.com/kathirvel-p22/JeduAi/releases/latest/download/jeduai-app.apk)**
+**[📱 Download JeduAI APK (v1.0.0)](https://github.com/kathirvel-p22/JeduAi/releases/download/v1.0.0/jeduai-app-v1.0.0.apk)**
 
-Or build from source:
-```bash
-flutter build apk --release
-```
-APK will be available at: `build/app/outputs/flutter-apk/app-release.apk`
+> **Note**: If the link doesn't work, go to [Releases](https://github.com/kathirvel-p22/JeduAi/releases) and download the latest APK.
 
 ### Installation Instructions
-1. Download the APK file
-2. Enable "Install from Unknown Sources" in your Android settings
-3. Open the APK file and install
-4. Launch JeduAI app
+1. Download the APK file (160 MB)
+2. On your Android device, go to Settings → Security
+3. Enable "Install from Unknown Sources" or "Install Unknown Apps"
+4. Open the downloaded APK file
+5. Tap "Install" and wait for installation to complete
+6. Launch JeduAI app
+7. Login with demo credentials (see below)
+
+### Build from Source
+```bash
+git clone https://github.com/kathirvel-p22/JeduAi.git
+cd JeduAi/jeduai_app1
+flutter pub get
+flutter build apk --release
+```
+APK will be at: `build/app/outputs/flutter-apk/app-release.apk`
 
 ## 🚀 Quick Start
 

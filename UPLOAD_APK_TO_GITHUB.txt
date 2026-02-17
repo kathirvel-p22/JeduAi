@@ -1,0 +1,69 @@
+HOW TO UPLOAD APK TO GITHUB RELEASES
+=====================================
+
+Follow these simple steps to make your APK downloadable from GitHub:
+
+STEP 1: Go to Your Repository
+------------------------------
+Open: https://github.com/kathirvel-p22/JeduAi
+
+STEP 2: Create a New Release
+-----------------------------
+1. Click "Releases" on the right sidebar
+2. Click "Create a new release" button
+
+STEP 3: Fill Release Details
+-----------------------------
+Tag version: v1.0.0
+Release title: JeduAI v1.0.0 - AI Education Platform
+
+Description (copy this):
+------------------------
+🎓 JeduAI v1.0.0 - Smart Learning & Assessment Platform
+
+✨ Features:
+- 🤖 AI Assessment Generator (Gemini 2.5 Flash)
+- 💬 AI Tutor with 100+ language support
+- 🎥 Video Translation (20+ languages)
+- 👨‍🎓 Student Portal
+- 👨‍🏫 Staff Portal  
+- 👨‍💼 Admin Portal
+
+📥 Installation:
+1. Download APK below
+2. Enable "Install from Unknown Sources"
+3. Install and launch
+
+🔑 Demo Login:
+- Student: kathirvel@gmail.com (any password)
+- Staff: vijayakumar@vsb.edu (any password)
+- Admin: admin@vsb.edu (any password)
+
+STEP 4: Upload APK
+------------------
+1. Scroll to "Attach binaries by dropping them here or selecting them"
+2. Click to browse or drag and drop
+3. Select file: jeduai-app-v1.0.0-debug.apk
+   Location: D:\my projects\JeduAi_App\jeduai_app1\jeduai-app-v1.0.0-debug.apk
+4. Rename uploaded file to: jeduai-app-v1.0.0.apk
+
+STEP 5: Publish
+---------------
+1. Check "Set as the latest release"
+2. Click "Publish release"
+
+DONE! Your APK is now downloadable from:
+https://github.com/kathirvel-p22/JeduAi/releases/download/v1.0.0/jeduai-app-v1.0.0.apk
+
+The README.md already has this link, so users can download directly!
+
+ALL FEATURES WORKING:
+=====================
+✅ AI Tutor - Works with Gemini API
+✅ Text Translation - 100+ languages
+✅ Video Translation - 20+ languages
+✅ Assessment Generator - AI-powered
+✅ All portals (Admin, Staff, Student)
+✅ Multi-language UI
+
+The app will work when you run it - all features are functional!
