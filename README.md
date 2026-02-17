@@ -268,3 +268,34 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 ---
 
 **Made with ❤️ for VSB Engineering College - III CSBS**
+
+---
+
+## 📱 Download JeduAI App
+
+### Android APK Download
+
+**[⬇️ Click Here to Download JeduAI APK (v1.0.0)](https://github.com/kathirvel-p22/JeduAi/releases/download/v1.0.0/jeduai-app-v1.0.0.apk)**
+
+**Size**: 160 MB | **Version**: 1.0.0 | **Platform**: Android 5.0+
+
+### Quick Install Guide
+1. Download the APK file above
+2. Open Settings → Security → Enable "Install from Unknown Sources"
+3. Open the downloaded APK file
+4. Tap "Install"
+5. Launch JeduAI and login with demo credentials
+
+### Demo Login Credentials
+- **Student**: `kathirvel@gmail.com` (any password)
+- **Staff**: `vijayakumar@vsb.edu` (any password)
+- **Admin**: `admin@vsb.edu` (any password)
+
+### ✅ All Features Working
+- ✅ AI Tutor (Multi-language chat)
+- ✅ Text Translation (100+ languages)
+- ✅ Video Translation (20+ languages)
+- ✅ AI Assessment Generator
+- ✅ All Portals (Admin, Staff, Student)
+
+**Note**: If download link doesn't work, go to [Releases](https://github.com/kathirvel-p22/JeduAi/releases) page.
