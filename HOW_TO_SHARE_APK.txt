@@ -1,0 +1,47 @@
+HOW TO SHARE YOUR APK FILE
+===========================
+
+GitHub doesn't support APK files. Here are your options:
+
+OPTION 1: Google Drive (EASIEST)
+---------------------------------
+1. Go to https://drive.google.com
+2. Click "New" → "File upload"
+3. Select: jeduai-app-v1.0.0-debug.apk
+   Location: D:\my projects\JeduAi_App\jeduai_app1\jeduai-app-v1.0.0-debug.apk
+4. After upload, right-click the file → "Get link"
+5. Set to "Anyone with the link can view"
+6. Copy the link
+7. Update README.md line with your Google Drive link
+
+OPTION 2: Dropbox
+-----------------
+1. Upload APK to Dropbox
+2. Get shareable link
+3. Update README.md with the link
+
+OPTION 3: MediaFire
+-------------------
+1. Go to https://www.mediafire.com
+2. Upload APK
+3. Get download link
+4. Update README.md
+
+OPTION 4: Build Instructions Only
+----------------------------------
+Just tell users to build from source (already in README)
+
+CURRENT STATUS:
+===============
+✅ All code is working
+✅ APK is built (160 MB)
+✅ README has download section
+✅ All features functional:
+   - AI Tutor
+   - Text Translation (100+ languages)
+   - Video Translation (20+ languages)
+   - All portals working
+
+APK Location: D:\my projects\JeduAi_App\jeduai_app1\jeduai-app-v1.0.0-debug.apk
+
+RECOMMENDED: Use Google Drive - it's free and easy!

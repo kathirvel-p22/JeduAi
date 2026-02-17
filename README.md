@@ -275,9 +275,15 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 
 ### Android APK Download
 
-**[⬇️ Click Here to Download JeduAI APK (v1.0.0)](https://github.com/kathirvel-p22/JeduAi/releases/download/v1.0.0/jeduai-app-v1.0.0.apk)**
+**[⬇️ Click Here to Download JeduAI APK (v1.0.0)](https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing)**
 
 **Size**: 160 MB | **Version**: 1.0.0 | **Platform**: Android 5.0+
+
+> **Note**: Upload the APK to Google Drive and replace `YOUR_FILE_ID` with your actual file ID, or use one of the alternatives below.
+
+### Alternative Download Options:
+- **Build from Source**: Clone the repo and run `flutter build apk --release`
+- **Contact**: Email kathirvel@gmail.com for APK file
 
 ### Quick Install Guide
 1. Download the APK file above
@@ -298,4 +304,11 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 - ✅ AI Assessment Generator
 - ✅ All Portals (Admin, Staff, Student)
 
-**Note**: If download link doesn't work, go to [Releases](https://github.com/kathirvel-p22/JeduAi/releases) page.
+### Build Instructions
+```bash
+git clone https://github.com/kathirvel-p22/JeduAi.git
+cd JeduAi/jeduai_app1
+flutter pub get
+flutter build apk --release
+# APK will be at: build/app/outputs/flutter-apk/app-release.apk
+```
