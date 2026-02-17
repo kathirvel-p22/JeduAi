@@ -286,42 +286,22 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
         emailController.text.isEmpty ||
         passwordController.text.isEmpty ||
         confirmPasswordController.text.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Please fill all fields',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _showErrorSnackbar('Please fill all fields');
       return;
     }
 
     if (!emailController.text.contains('@')) {
-      Get.snackbar(
-        'Error',
-        'Please enter a valid email',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _showErrorSnackbar('Please enter a valid email');
       return;
     }
 
     if (passwordController.text.length < 6) {
-      Get.snackbar(
-        'Error',
-        'Password must be at least 6 characters',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _showErrorSnackbar('Password must be at least 6 characters');
       return;
     }
 
     if (passwordController.text != confirmPasswordController.text) {
-      Get.snackbar(
-        'Error',
-        'Passwords do not match',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _showErrorSnackbar('Passwords do not match');
       return;
     }
 
@@ -334,9 +314,33 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
     );
 
     if (success) {
-      // Show success dialog
-      Get.dialog(
-        AlertDialog(
+      // Show success dialog after frame is built
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _showSuccessDialog();
+        }
+      });
+    }
+  }
+
+  void _showErrorSnackbar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -393,8 +397,8 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
           actions: [
             ElevatedButton(
               onPressed: () {
-                Get.back(); // Close dialog
-                Get.back(); // Go back to login
+                Navigator.of(context).pop(); // Close dialog
+                Navigator.of(context).pop(); // Go back to login
               },
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
@@ -405,9 +409,8 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
               child: Text('Go to Login', style: TextStyle(fontSize: 16)),
             ),
           ],
-        ),
-        barrierDismissible: false,
-      );
-    }
+        );
+      },
+    );
   }
 }

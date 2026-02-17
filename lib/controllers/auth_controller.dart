@@ -122,13 +122,7 @@ class AuthController extends GetxController {
           _navigateBasedOnRole(role);
         } else {
           String errorMessage = result?['error'] ?? 'Invalid email or password';
-          Get.snackbar(
-            'Login Failed',
-            errorMessage,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Get.theme.colorScheme.error.withAlpha(26),
-            duration: Duration(seconds: 3),
-          );
+          print('❌ Local login failed: $errorMessage');
         }
       }
     } catch (e) {
@@ -259,13 +253,7 @@ class AuthController extends GetxController {
           return true;
         } else {
           String errorMessage = result?['error'] ?? 'Signup failed';
-          Get.snackbar(
-            'Signup Failed',
-            errorMessage,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Get.theme.colorScheme.error.withAlpha(51),
-            duration: Duration(seconds: 3),
-          );
+          print('❌ Local signup failed: $errorMessage');
           return false;
         }
       }
