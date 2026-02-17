@@ -1,5 +1,11 @@
 # 🎓 JeduAI - Smart Learning & Assessment Platform
 
+<div align="center">
+  <img src="JeduAi_logo.png" alt="JeduAI Logo" width="300"/>
+  <br/>
+  <br/>
+</div>
+
 An AI-powered educational platform built with Flutter, featuring intelligent assessment generation, multi-language support, and real-time AI tutoring for VSB Engineering College.
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.0+-blue.svg)

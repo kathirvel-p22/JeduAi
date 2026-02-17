@@ -56,16 +56,53 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Lottie animation placeholder
-                  // Lottie.asset('assets/lottie/login_animation.json', height: 150),
-                  Icon(Icons.school, size: 100, color: Colors.white),
-                  SizedBox(height: 20),
+                  // JeduAI Logo
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(77),
+                          spreadRadius: 5,
+                          blurRadius: 15,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'assets/images/JeduAi_logo.png',
+                        height: 180,
+                        width: 180,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
                   Text(
-                    'JeduAI Login',
+                    'Welcome to JeduAI',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withAlpha(128),
+                          offset: Offset(2, 2),
+                          blurRadius: 4,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Smart Learning & Assessment Platform',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
                   SizedBox(height: 20),
