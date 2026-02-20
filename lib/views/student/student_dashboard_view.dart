@@ -7,7 +7,8 @@ import '../common/advanced_translation_view.dart';
 import 'student_ai_tutor_view.dart';
 import 'student_learning_view.dart';
 import 'student_online_classes_view.dart';
-import 'student_profile_view.dart';
+import 'personalized_profile_view.dart';
+import '../admin/all_users_view.dart';
 
 class StudentDashboardView extends StatefulWidget {
   const StudentDashboardView({super.key});
@@ -35,7 +36,7 @@ class _StudentDashboardViewState extends State<StudentDashboardView> {
       StudentAiTutorView(),
       StudentLearningView(),
       StudentOnlineClassesView(),
-      StudentProfileView(),
+      PersonalizedProfileView(),
     ];
 
     return Scaffold(
@@ -79,6 +80,13 @@ class _StudentDashboardViewState extends State<StudentDashboardView> {
               ),
               elevation: 0,
               actions: [
+                IconButton(
+                  icon: const Icon(Icons.storage),
+                  onPressed: () {
+                    Get.to(() => const AllUsersView());
+                  },
+                  tooltip: 'View All Users',
+                ),
                 IconButton(
                   icon: const Icon(Icons.notifications_outlined),
                   onPressed: () {

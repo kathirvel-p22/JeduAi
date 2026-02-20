@@ -14,6 +14,11 @@ import 'services/enhanced_translation_service.dart';
 import 'services/enhanced_ai_tutor_service.dart';
 import 'services/shared_assessment_service.dart';
 import 'services/media_translation_service.dart';
+import 'services/user_session_service.dart';
+import 'services/local_auth_service.dart';
+import 'controllers/auth_controller.dart';
+import 'services/app_update_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +49,12 @@ void main() async {
   Get.put(OnlineClassService(), permanent: true);
   Get.put(DatabaseService(), permanent: true);
 
+  // Initialize authentication services
+  Get.put(LocalAuthService(), permanent: true);
+  Get.put(UserSessionService(), permanent: true);
+  Get.put(AuthController(), permanent: true);
+  print('✅ Authentication services initialized');
+
   // Initialize controllers
   Get.put(OnlineClassController(), permanent: true);
   print('✅ Online Class Controller initialized');
@@ -65,6 +76,15 @@ void main() async {
   Get.put(MediaTranslationService(), permanent: true);
   print('✅ Media Translation Service initialized');
 
+  // Initialize Package Info for version checking
+  final packageInfo = await PackageInfo.fromPlatform();
+  Get.put(packageInfo, permanent: true);
+  print('✅ Package Info initialized (v${packageInfo.version})');
+
+  // Initialize App Update Service
+  Get.put(AppUpdateService(), permanent: true);
+  print('✅ App Update Service initialized');
+
   // Initialize database with automatic cleanup
   try {
     await Get.find<DatabaseService>().initializeDatabase();
@@ -76,8 +96,24 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Check for updates 2 seconds after app starts
+    Future.delayed(const Duration(seconds: 2), () {
+      if (Get.isRegistered<AppUpdateService>()) {
+        Get.find<AppUpdateService>().checkForUpdates();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

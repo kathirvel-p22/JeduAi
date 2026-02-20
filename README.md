@@ -73,14 +73,25 @@ An AI-powered educational platform built with Flutter, featuring intelligent ass
 ### Latest Release
 Download the Android APK and install on your device:
 
-**[📱 Download JeduAI APK (v1.0.0) - Direct Download](https://drive.google.com/uc?export=download&id=1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz)**
+**[📱 Download JeduAI APK (v1.0.1) - Direct Download](https://drive.google.com/uc?export=download&id=1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv)**
 
-**Alternative:** [Open in Google Drive](https://drive.google.com/file/d/1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz/view?usp=sharing) (tap 3 dots → Download)
+**Alternative:** [Open in Google Drive](https://drive.google.com/file/d/1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv/view?usp=sharing) (tap 3 dots → Download)
 
 > **📱 Mobile Tip**: If the link shows a preview, tap the **3 dots menu (⋮)** → **"Download"**
 
+### What's New in v1.0.1
+✅ Personalized user profiles with analytics  
+✅ User session management (separate data per user)  
+✅ All Users Database view (see all registered users)  
+✅ Auto-update system (checks for new versions automatically)  
+✅ Manual "Check for Updates" button in profile  
+✅ Profile statistics tracking (assessments, videos, translations)  
+✅ Login count and last login tracking  
+✅ Edit profile functionality  
+✅ Bug fixes and improvements  
+
 ### Installation Instructions
-1. Download the APK file (160 MB)
+1. Download the APK file (57.8 MB)
 2. On your Android device, go to Settings → Security
 3. Enable "Install from Unknown Sources" or "Install Unknown Apps"
 4. Open the downloaded APK file
@@ -307,11 +318,11 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 
 ### Android APK Download
 
-**[⬇️ Click Here to Download JeduAI APK (v1.0.0)](https://drive.google.com/uc?export=download&id=1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz)**
+**[⬇️ Click Here to Download JeduAI APK (v1.0.1)](https://drive.google.com/uc?export=download&id=1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv)**
 
-**Alternative Link (if above doesn't work):** [Open in Google Drive](https://drive.google.com/file/d/1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz/view?usp=sharing)
+**Alternative Link (if above doesn't work):** [Open in Google Drive](https://drive.google.com/file/d/1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv/view?usp=sharing)
 
-**Size**: 160 MB | **Version**: 1.0.0 | **Platform**: Android 5.0+
+**Size**: 57.8 MB | **Version**: 1.0.1 | **Platform**: Android 5.0+
 
 > **📱 Mobile Users**: If the link opens a preview page, tap the **3 dots menu (⋮)** at top-right → Select **"Download"**
 
@@ -326,7 +337,7 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
    - Select **"Download"** from the menu
 3. Or use the **Alternative Link** and tap the download icon (⬇️)
 4. If prompted "Can't scan for viruses", tap **"Download anyway"** (the file is safe)
-5. Wait for download to complete (160 MB, takes 2-5 minutes depending on your internet speed)
+5. Wait for download to complete (57.8 MB, takes 1-2 minutes depending on your internet speed)
 6. You'll see a notification when download is complete
 
 **On PC/Laptop:**
@@ -351,7 +362,7 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 
 #### Step 3: Install the APK
 1. Open your **Downloads** folder or notification panel
-2. Tap on **jeduai-app-v1.0.0-debug.apk**
+2. Tap on **jeduai-app-v1.0.1.apk**
 3. Tap **"Install"** button
 4. Wait for installation to complete (30-60 seconds)
 5. Tap **"Open"** or find the **JeduAI** app icon on your home screen

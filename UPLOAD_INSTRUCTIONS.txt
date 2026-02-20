@@ -1,0 +1,42 @@
+📤 SIMPLE UPLOAD INSTRUCTIONS
+==============================
+
+Your APK is ready! Follow these simple steps:
+
+STEP 1: Find Your APK
+----------------------
+Location: D:\my projects\JeduAi_App\jeduai_app1\build\app\outputs\flutter-apk\
+File: jeduai-app-v1.0.1.apk
+Size: 57.8 MB
+
+STEP 2: Upload to Google Drive
+-------------------------------
+1. Open Google Drive in your browser
+2. Click "New" button (top-left)
+3. Click "File upload"
+4. Select jeduai-app-v1.0.1.apk
+5. Wait for upload (about 1-2 minutes)
+
+STEP 3: Get the Share Link
+---------------------------
+1. Find the uploaded file in Google Drive
+2. Right-click on it
+3. Click "Share" or "Get link"
+4. Change setting to "Anyone with the link"
+5. Click "Copy link"
+6. SAVE THIS LINK - you'll need it!
+
+STEP 4: Tell Me the Link
+-------------------------
+Once you have the Google Drive link, paste it here and say:
+"Here's the link: [YOUR_LINK]"
+
+I will then:
+✅ Update version.json automatically
+✅ Update README.md automatically
+✅ Commit and push to GitHub
+✅ Your auto-update system will be live!
+
+That's it! Just 4 simple steps.
+
+Upload the APK now and share the link with me! 🚀

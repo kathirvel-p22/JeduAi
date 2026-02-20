@@ -1,0 +1,8 @@
+{
+  "version": "1.0.1",
+  "downloadUrl": "https://drive.google.com/file/d/1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv/view?usp=sharing",
+  "message": "New features added:\n• Personalized user profiles with analytics\n• User session management (separate data per user)\n• All Users Database view (see all registered users)\n• Auto-update system (checks for new versions)\n• Manual 'Check for Updates' button in profile\n• Profile statistics tracking\n• Login count and last login tracking\n• Edit profile functionality\n• Bug fixes and improvements",
+  "releaseDate": "2026-02-16",
+  "mandatory": false,
+  "minSupportedVersion": "1.0.0"
+}

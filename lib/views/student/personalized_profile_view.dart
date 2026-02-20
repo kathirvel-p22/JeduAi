@@ -2,15 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../services/user_session_service.dart';
 import '../../controllers/auth_controller.dart';
+import '../../services/app_update_service.dart';
 
-class PersonalizedProfileView extends StatelessWidget {
-  PersonalizedProfileView({super.key});
+class PersonalizedProfileView extends StatefulWidget {
+  const PersonalizedProfileView({super.key});
 
-  final UserSessionService _sessionService = Get.find<UserSessionService>();
-  final AuthController _authController = Get.find<AuthController>();
+  @override
+  State<PersonalizedProfileView> createState() =>
+      _PersonalizedProfileViewState();
+}
+
+class _PersonalizedProfileViewState extends State<PersonalizedProfileView> {
+  late UserSessionService _sessionService;
+  late AuthController _authController;
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeServices();
+  }
+
+  void _initializeServices() {
+    try {
+      // Try to get existing instance or create new one
+      if (Get.isRegistered<UserSessionService>()) {
+        _sessionService = Get.find<UserSessionService>();
+      } else {
+        _sessionService = Get.put(UserSessionService());
+      }
+
+      if (Get.isRegistered<AuthController>()) {
+        _authController = Get.find<AuthController>();
+      } else {
+        _authController = Get.put(AuthController());
+      }
+
+      setState(() {
+        _isInitialized = true;
+      });
+    } catch (e) {
+      print('❌ Error initializing services: $e');
+      setState(() {
+        _isInitialized = true; // Show error state
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('My Profile'),
+          backgroundColor: const Color(0xFF2196F3),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Profile'),
@@ -30,99 +79,142 @@ class PersonalizedProfileView extends StatelessWidget {
           ),
         ],
       ),
-      body: Obx(() {
-        if (!_sessionService.isLoggedIn) {
-          return const Center(child: Text('No user logged in'));
-        }
-
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              // Profile Header with User Info
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF2196F3), Color(0xFF64B5F6)],
+      body: _sessionService.currentUser.value == null
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.person_off, size: 64, color: Colors.grey),
+                  SizedBox(height: 16),
+                  Text(
+                    'No user logged in',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
                   ),
-                ),
+                  SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.offAllNamed('/login');
+                    },
+                    child: Text('Go to Login'),
+                  ),
+                ],
+              ),
+            )
+          : Obx(
+              () => SingleChildScrollView(
                 child: Column(
                   children: [
+                    // Profile Header with User Info
                     Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 3),
-                      ),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.white,
-                        child: Text(
-                          _sessionService.userName[0].toUpperCase(),
-                          style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF2196F3),
-                          ),
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(24),
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF2196F3), Color(0xFF64B5F6)],
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      _sessionService.userName,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 3),
+                            ),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.white,
+                              child: Text(
+                                _sessionService.userName[0].toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF2196F3),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            _sessionService.userName,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _sessionService.userRole.toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withAlpha(51),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              'Login Count: ${_sessionService.loginCount.value}',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _sessionService.userRole.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white70,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withAlpha(51),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'Login Count: ${_sessionService.loginCount.value}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
-              // User Statistics
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    _buildStatisticsCard(),
-                    const SizedBox(height: 16),
-                    _buildPersonalInfoCard(),
-                    const SizedBox(height: 16),
-                    _buildActivityCard(),
-                    const SizedBox(height: 24),
-                    _buildEditProfileButton(context),
+                    // User Statistics
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          _buildStatisticsCard(),
+                          const SizedBox(height: 16),
+                          _buildPersonalInfoCard(),
+                          const SizedBox(height: 16),
+                          _buildActivityCard(),
+                          const SizedBox(height: 24),
+                          _buildEditProfileButton(context),
+                          const SizedBox(height: 12),
+                          _buildCheckUpdatesButton(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
-        );
-      }),
+            ),
+    );
+  }
+
+  Widget _buildCheckUpdatesButton() {
+    return OutlinedButton.icon(
+      onPressed: () {
+        if (Get.isRegistered<AppUpdateService>()) {
+          Get.find<AppUpdateService>().manualUpdateCheck();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Update service not available'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      },
+      icon: const Icon(Icons.system_update),
+      label: const Text('Check for Updates'),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        side: const BorderSide(color: Color(0xFF2196F3)),
+      ),
     );
   }
 
