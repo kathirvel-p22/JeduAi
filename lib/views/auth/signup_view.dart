@@ -14,7 +14,8 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   String selectedRole = 'Student';
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -111,7 +112,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(height: 30),
-                  
+
                   // Name Field
                   TextField(
                     controller: nameController,
@@ -126,7 +127,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(height: 15),
-                  
+
                   // Email Field
                   TextField(
                     controller: emailController,
@@ -142,7 +143,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(height: 15),
-                  
+
                   // Role Selector
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 12),
@@ -161,7 +162,9 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                             dropdownColor: Colors.white,
                             style: TextStyle(color: Colors.black),
                             underline: SizedBox(),
-                            items: ['Student', 'Staff', 'Admin'].map((String value) {
+                            items: ['Student', 'Staff', 'Admin'].map((
+                              String value,
+                            ) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
@@ -178,7 +181,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(height: 15),
-                  
+
                   // Password Field
                   TextField(
                     controller: passwordController,
@@ -194,7 +197,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(height: 15),
-                  
+
                   // Confirm Password Field
                   TextField(
                     controller: confirmPasswordController,
@@ -210,7 +213,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                     ),
                   ),
                   SizedBox(height: 25),
-                  
+
                   // Signup Button
                   Obx(
                     () => authController.isLoading.value
@@ -247,7 +250,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                           ),
                   ),
                   SizedBox(height: 20),
-                  
+
                   // Login Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -374,7 +377,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                       style: TextStyle(color: Colors.green[700]),
                     ),
                     Text(
-                      '✓ ${selectedRole} profile set up',
+                      '✓ $selectedRole profile set up',
                       style: TextStyle(color: Colors.green[700]),
                     ),
                     Text(

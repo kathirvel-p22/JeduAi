@@ -2,11 +2,13 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/local_auth_service.dart';
+import '../services/user_session_service.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final LocalAuthService _localAuth = LocalAuthService();
+  final UserSessionService _sessionService = Get.put(UserSessionService());
 
   var isLoading = false.obs;
 
@@ -23,7 +25,9 @@ class AuthController extends GetxController {
           password: password,
         );
 
-        print('✅ Firebase Auth successful for user: ${userCredential.user!.uid}');
+        print(
+          '✅ Firebase Auth successful for user: ${userCredential.user!.uid}',
+        );
 
         String uid = userCredential.user!.uid;
         String normalizedRole = role.toLowerCase();
@@ -109,16 +113,17 @@ class AuthController extends GetxController {
       } catch (firebaseError) {
         print('⚠️ Firebase login failed: $firebaseError');
         print('🔄 Falling back to local authentication...');
-        
+
         // Fallback to local authentication
         final result = await _localAuth.loginUser(
           email: email,
           password: password,
           role: role.toLowerCase(),
         );
-        
+
         if (result != null && result['error'] == null) {
           print('✅ Logged in locally!');
+          await _sessionService.setCurrentUser(result);
           _navigateBasedOnRole(role);
         } else {
           String errorMessage = result?['error'] ?? 'Invalid email or password';
@@ -160,6 +165,7 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     await _auth.signOut();
+    await _sessionService.clearCurrentUser();
     Get.offNamed('/login');
   }
 
@@ -177,10 +183,8 @@ class AuthController extends GetxController {
       // Try Firebase first
       try {
         // Create user with Firebase Auth
-        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
+        UserCredential userCredential = await _auth
+            .createUserWithEmailAndPassword(email: email, password: password);
 
         print('✅ Firebase Auth account created: ${userCredential.user!.uid}');
 
@@ -239,7 +243,7 @@ class AuthController extends GetxController {
       } catch (firebaseError) {
         print('⚠️ Firebase signup failed: $firebaseError');
         print('🔄 Falling back to local authentication...');
-        
+
         // Fallback to local authentication
         final result = await _localAuth.signupUser(
           name: name,
@@ -247,7 +251,7 @@ class AuthController extends GetxController {
           password: password,
           role: role,
         );
-        
+
         if (result != null && result['error'] == null) {
           print('✅ Account created locally!');
           return true;
