@@ -18,6 +18,8 @@ import 'services/user_session_service.dart';
 import 'services/local_auth_service.dart';
 import 'controllers/auth_controller.dart';
 import 'services/app_update_service.dart';
+import 'services/admin_initializer.dart';
+import 'services/firebase_admin_initializer.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 void main() async {
@@ -38,10 +40,16 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     print('✅ Firebase initialized successfully');
+    
+    // Initialize Firebase default admin account (first run only)
+    await FirebaseAdminInitializer.initializeDefaultAdmin();
   } catch (e) {
     print('⚠️ Firebase initialization failed: $e');
     print('⚠️ App will run without Firebase authentication');
   }
+
+  // Initialize local default admin account (fallback)
+  await AdminInitializer.initializeDefaultAdmin();
 
   // Initialize core services
   Get.put(UserService(), permanent: true);

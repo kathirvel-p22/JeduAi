@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
 /// User Session Service - Manages current logged-in user and their data
@@ -47,8 +48,21 @@ class UserSessionService extends GetxService {
   Future<void> setCurrentUser(Map<String, dynamic> user) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      currentUser.value = user;
-      await prefs.setString(_currentUserKey, jsonEncode(user));
+      
+      // Convert Firestore Timestamps to ISO strings before storing
+      final Map<String, dynamic> userToStore = {};
+      
+      user.forEach((key, value) {
+        if (value is Timestamp) {
+          // Convert Firestore Timestamp to ISO string
+          userToStore[key] = value.toDate().toIso8601String();
+        } else {
+          userToStore[key] = value;
+        }
+      });
+      
+      currentUser.value = userToStore;
+      await prefs.setString(_currentUserKey, jsonEncode(userToStore));
 
       // Update login count and date
       await incrementLoginCount();
@@ -57,7 +71,7 @@ class UserSessionService extends GetxService {
       // Load user analytics
       await loadUserAnalytics();
 
-      print('✅ User session set: ${user['email']}');
+      print('✅ User session set: ${userToStore['email']}');
     } catch (e) {
       print('❌ Error setting user session: $e');
     }
@@ -193,6 +207,7 @@ class UserSessionService extends GetxService {
   String get userId => currentUser.value?['uid'] ?? '';
 
   /// Get user profile data
+  /// Get user profile data
   Map<String, dynamic> get userProfile {
     if (currentUser.value == null) return {};
 
@@ -201,7 +216,7 @@ class UserSessionService extends GetxService {
       'email': userEmail,
       'role': userRole,
       'uid': userId,
-      'createdAt': currentUser.value?['createdAt'] ?? '',
+      'createdAt': _convertTimestampToString(currentUser.value?['createdAt']),
       'department': currentUser.value?['department'] ?? '',
       'year': currentUser.value?['year'] ?? '',
       'section': currentUser.value?['section'] ?? '',
@@ -209,6 +224,14 @@ class UserSessionService extends GetxService {
       'subjects': currentUser.value?['subjects'] ?? [],
       'permissions': currentUser.value?['permissions'] ?? [],
     };
+  }
+
+  /// Helper to convert Timestamp to String
+  String _convertTimestampToString(dynamic value) {
+    if (value == null) return '';
+    if (value is String) return value;
+    if (value is Timestamp) return value.toDate().toIso8601String();
+    return '';
   }
 
   /// Get user statistics

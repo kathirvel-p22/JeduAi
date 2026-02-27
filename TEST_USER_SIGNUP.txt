@@ -1,0 +1,142 @@
+🧪 TEST: User Signup & Admin View
+==================================
+
+Follow these exact steps to test if users are being saved:
+
+STEP 1: OPEN THE APP
+--------------------
+1. Make sure the app is running: http://localhost:8080
+2. You should see the login screen
+
+STEP 2: SIGN UP A NEW STUDENT
+------------------------------
+1. Click "Sign Up" or "Register" button
+2. Fill in the form:
+   - Name: Test Student 1
+   - Email: student1@test.com
+   - Password: 123456
+   - Role: Student
+   - Department: Computer Science
+   - Year: 3rd Year
+   - Section: A
+3. Click "Sign Up" button
+4. You should see "Success" message
+5. Click "Go to Login"
+
+STEP 3: VERIFY USER WAS SAVED
+------------------------------
+Method A - Using Browser DevTools:
+1. Press F12 (open DevTools)
+2. Click "Application" tab
+3. Expand "Local Storage" in left sidebar
+4. Click on "http://localhost:8080"
+5. Look for key: flutter.local_users
+6. Click on it
+7. You should see JSON with your new user!
+
+Method B - Using Console:
+1. Press F12 (open DevTools)
+2. Click "Console" tab
+3. Type: localStorage.getItem('flutter.local_users')
+4. Press Enter
+5. You should see your user data!
+
+STEP 4: LOGIN AS ADMIN
+-----------------------
+1. On the login screen:
+   - Email: admin@vsb.edu
+   - Password: any password (e.g., 123456)
+   - Role: Admin
+2. Click "Login"
+3. You should see Admin Dashboard
+
+STEP 5: VIEW ALL USERS
+-----------------------
+1. Scroll down on Admin Dashboard
+2. Find "All Users Database" button (purple card)
+3. Click on it
+4. You should see:
+   ✅ Test Student 1 (student1@test.com)
+   ✅ Admin User (admin@vsb.edu)
+   ✅ Any other users you created
+
+STEP 6: SIGN UP MORE USERS
+---------------------------
+1. Logout from admin
+2. Sign up another user:
+   - Name: Test Staff 1
+   - Email: staff1@test.com
+   - Password: 123456
+   - Role: Staff
+3. Logout
+4. Login as admin again
+5. Go to "All Users Database"
+6. You should now see:
+   ✅ Test Student 1
+   ✅ Test Staff 1
+   ✅ Admin User
+
+EXPECTED RESULTS:
+-----------------
+✅ Each signup creates a new user
+✅ Users are stored in browser LocalStorage
+✅ Admin can see all users in "All Users Database"
+✅ Users persist until browser data is cleared
+✅ Each user has their own data (separate profiles)
+
+IF IT'S NOT WORKING:
+--------------------
+1. Check browser console (F12 → Console) for errors
+2. Make sure you're using the same browser window
+3. Don't use incognito mode
+4. Don't clear browser data between steps
+5. Make sure app is running on http://localhost:8080
+
+VERIFY IN BROWSER STORAGE:
+---------------------------
+After signing up users, check:
+
+1. Press F12
+2. Application → Local Storage → http://localhost:8080
+3. You should see these keys:
+   - flutter.local_users (all registered users)
+   - flutter.current_user (currently logged in user)
+   - flutter.user_analytics_XXXXX (user analytics data)
+
+TROUBLESHOOTING:
+----------------
+Problem: "Users not showing in admin portal"
+Solution: 
+- Click the refresh button in All Users Database
+- Make sure you signed up in the same browser
+- Check browser console for errors
+
+Problem: "User already exists" error
+Solution:
+- Use a different email address
+- Or clear browser data and start fresh
+
+Problem: "Can't see All Users Database button"
+Solution:
+- Make sure you're logged in as Admin
+- Scroll down on the admin dashboard
+- Look for purple gradient card
+
+SUCCESS CRITERIA:
+-----------------
+✅ Can sign up new users
+✅ Users appear in browser LocalStorage
+✅ Admin can view all users
+✅ User count increases with each signup
+✅ Can filter users by role (Student/Staff/Admin)
+
+YOUR SYSTEM IS WORKING IF:
+---------------------------
+1. You can sign up users
+2. They appear in browser storage (F12 → Application)
+3. Admin can see them in "All Users Database"
+4. Each user has separate profile data
+
+READY TO TEST? 
+--------------
+Start from STEP 1 and follow each step carefully!

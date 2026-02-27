@@ -29,40 +29,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'dummy-api-key',
-    appId: 'dummy-app-id',
-    messagingSenderId: 'dummy-sender-id',
-    projectId: 'dummy-project-id',
-    authDomain: 'dummy-project-id.firebaseapp.com',
-    storageBucket: 'dummy-project-id.appspot.com',
-    measurementId: 'G-dummy-measurement-id',
+    apiKey: 'AIzaSyAxaLQ3Jj2VimuE-2bUH38cMJ2uwq0m2UU',
+    appId: '1:415339822502:web:280f8626613d3034f0a367',
+    messagingSenderId: '415339822502',
+    projectId: 'jeduai-4b028',
+    authDomain: 'jeduai-4b028.firebaseapp.com',
+    storageBucket: 'jeduai-4b028.firebasestorage.app',
+    measurementId: 'G-GRED4S15ZV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'dummy-api-key',
-    appId: 'dummy-app-id',
-    messagingSenderId: 'dummy-sender-id',
-    projectId: 'dummy-project-id',
+    apiKey: 'AIzaSyAOl0t6ul03RfKcsHHVTLPnew0hsW-vJ9s',
+    appId: '1:415339822502:android:e757a2c7ba7df529f0a367',
+    messagingSenderId: '415339822502',
+    projectId: 'jeduai-4b028',
+    storageBucket: 'jeduai-4b028.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'dummy-api-key',
-    appId: 'dummy-app-id',
-    messagingSenderId: 'dummy-sender-id',
-    projectId: 'dummy-project-id',
+    apiKey: 'AIzaSyAOl0t6ul03RfKcsHHVTLPnew0hsW-vJ9s',
+    appId: '1:415339822502:ios:e757a2c7ba7df529f0a367',
+    messagingSenderId: '415339822502',
+    projectId: 'jeduai-4b028',
+    storageBucket: 'jeduai-4b028.firebasestorage.app',
+    iosBundleId: 'JeduAi.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'dummy-api-key',
-    appId: 'dummy-app-id',
-    messagingSenderId: 'dummy-sender-id',
-    projectId: 'dummy-project-id',
+    apiKey: 'AIzaSyAOl0t6ul03RfKcsHHVTLPnew0hsW-vJ9s',
+    appId: '1:415339822502:ios:e757a2c7ba7df529f0a367',
+    messagingSenderId: '415339822502',
+    projectId: 'jeduai-4b028',
+    storageBucket: 'jeduai-4b028.firebasestorage.app',
+    iosBundleId: 'JeduAi.app',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'dummy-api-key',
-    appId: 'dummy-app-id',
-    messagingSenderId: 'dummy-sender-id',
-    projectId: 'dummy-project-id',
+    apiKey: 'AIzaSyAOl0t6ul03RfKcsHHVTLPnew0hsW-vJ9s',
+    appId: '1:415339822502:web:280f8626613d3034f0a367',
+    messagingSenderId: '415339822502',
+    projectId: 'jeduai-4b028',
+    storageBucket: 'jeduai-4b028.firebasestorage.app',
   );
 }

@@ -144,7 +144,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                   ),
                   SizedBox(height: 15),
 
-                  // Role Selector
+                  // Role Selector (Student and Staff only - Admin cannot be created via signup)
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
@@ -162,7 +162,7 @@ class _SignupViewState extends State<SignupView> with TickerProviderStateMixin {
                             dropdownColor: Colors.white,
                             style: TextStyle(color: Colors.black),
                             underline: SizedBox(),
-                            items: ['Student', 'Staff', 'Admin'].map((
+                            items: ['Student', 'Staff'].map((
                               String value,
                             ) {
                               return DropdownMenuItem<String>(

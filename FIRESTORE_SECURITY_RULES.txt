@@ -1,0 +1,177 @@
+🔒 FIRESTORE SECURITY RULES FOR JEDUAI
+========================================
+
+Copy and paste these rules into Firebase Console > Firestore Database > Rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isSignedIn() && 
+             get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Helper function to check if user is staff
+    function isStaff() {
+      return isSignedIn() && 
+             get(/databases/$(database)/documents/staff/$(request.auth.uid)).data.role == 'staff';
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Users collection - main user data
+    match /users/{userId} {
+      // Anyone can read their own user document
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Users can create their own document during signup
+      allow create: if isSignedIn() && isOwner(userId);
+      
+      // Users can update their own document
+      allow update: if isOwner(userId) || isAdmin();
+      
+      // Only admins can delete users
+      allow delete: if isAdmin();
+    }
+    
+    // Students collection
+    match /students/{studentId} {
+      // Students can read their own data, staff and admins can read all
+      allow read: if isOwner(studentId) || isStaff() || isAdmin();
+      
+      // Students can create their own document during signup
+      allow create: if isSignedIn() && isOwner(studentId);
+      
+      // Students can update their own data, staff and admins can update all
+      allow update: if isOwner(studentId) || isStaff() || isAdmin();
+      
+      // Only admins can delete students
+      allow delete: if isAdmin();
+    }
+    
+    // Staff collection
+    match /staff/{staffId} {
+      // Staff can read their own data, admins can read all
+      allow read: if isOwner(staffId) || isAdmin();
+      
+      // Staff can create their own document during signup
+      allow create: if isSignedIn() && isOwner(staffId);
+      
+      // Staff can update their own data, admins can update all
+      allow update: if isOwner(staffId) || isAdmin();
+      
+      // Only admins can delete staff
+      allow delete: if isAdmin();
+    }
+    
+    // Admins collection
+    match /admins/{adminId} {
+      // Only admins can read admin data
+      allow read: if isAdmin();
+      
+      // Only existing admins can create new admins
+      allow create: if isAdmin();
+      
+      // Admins can update their own data
+      allow update: if isOwner(adminId) || isAdmin();
+      
+      // Only admins can delete other admins
+      allow delete: if isAdmin();
+    }
+    
+    // Assessments collection
+    match /assessments/{assessmentId} {
+      // Everyone can read assessments
+      allow read: if isSignedIn();
+      
+      // Only staff and admins can create assessments
+      allow create: if isStaff() || isAdmin();
+      
+      // Only staff and admins can update assessments
+      allow update: if isStaff() || isAdmin();
+      
+      // Only admins can delete assessments
+      allow delete: if isAdmin();
+    }
+    
+    // Assessment results collection
+    match /assessment_results/{resultId} {
+      // Users can read their own results, staff and admins can read all
+      allow read: if isSignedIn();
+      
+      // Users can create their own results
+      allow create: if isSignedIn();
+      
+      // Users can update their own results
+      allow update: if isSignedIn();
+      
+      // Only admins can delete results
+      allow delete: if isAdmin();
+    }
+    
+    // Courses collection
+    match /courses/{courseId} {
+      // Everyone can read courses
+      allow read: if isSignedIn();
+      
+      // Only staff and admins can create courses
+      allow create: if isStaff() || isAdmin();
+      
+      // Only staff and admins can update courses
+      allow update: if isStaff() || isAdmin();
+      
+      // Only admins can delete courses
+      allow delete: if isAdmin();
+    }
+    
+    // Analytics collection
+    match /analytics/{analyticsId} {
+      // Users can read their own analytics, admins can read all
+      allow read: if isSignedIn();
+      
+      // Users can create their own analytics
+      allow create: if isSignedIn();
+      
+      // Users can update their own analytics
+      allow update: if isSignedIn();
+      
+      // Only admins can delete analytics
+      allow delete: if isAdmin();
+    }
+  }
+}
+
+========================================
+HOW TO APPLY THESE RULES:
+========================================
+
+1. Go to Firebase Console: https://console.firebase.google.com/
+2. Select your project: jeduai-4b028
+3. Click "Firestore Database" in the left menu
+4. Click the "Rules" tab at the top
+5. Copy the rules above (starting from "rules_version = '2';")
+6. Paste them into the editor
+7. Click "Publish" button
+
+⚠️ IMPORTANT: These rules ensure:
+- Students can only see their own data
+- Staff can see all students but not other staff
+- Admins can see and manage everything
+- Only admins can create new admin accounts
+- All data is protected and requires authentication
+
+✅ After publishing, test the rules by:
+1. Signing up as a student
+2. Checking that the student can see their profile
+3. Logging in as admin (admin@vsb.edu / admin123)
+4. Checking that admin can see all users

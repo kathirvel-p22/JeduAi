@@ -15,6 +15,11 @@ class LocalAuthService {
     required String role,
   }) async {
     try {
+      // SECURITY: Prevent admin signup via API
+      if (role.toLowerCase() == 'admin') {
+        return {'error': 'Admin accounts cannot be created through signup. Contact system administrator.'};
+      }
+      
       final prefs = await SharedPreferences.getInstance();
       
       // Get existing users

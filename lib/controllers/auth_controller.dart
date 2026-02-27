@@ -61,6 +61,11 @@ class AuthController extends GetxController {
               return;
             }
 
+            // Save user session
+            Map<String, dynamic> userData = roleDoc.data() as Map<String, dynamic>;
+            await _sessionService.setCurrentUser(userData);
+            print('✅ User session saved');
+
             // Update last login for admins
             if (normalizedRole == 'admin') {
               await _firestore.collection('admins').doc(uid).update({
@@ -85,6 +90,14 @@ class AuthController extends GetxController {
 
           if (!userDoc.exists) {
             print('⚠️ User document not found. Using selected role: $role');
+            // Create minimal user data for session
+            Map<String, dynamic> userData = {
+              'uid': uid,
+              'email': email,
+              'name': userCredential.user!.displayName ?? 'User',
+              'role': role,
+            };
+            await _sessionService.setCurrentUser(userData);
             _navigateBasedOnRole(role);
             return;
           }
@@ -105,9 +118,22 @@ class AuthController extends GetxController {
             return;
           }
 
+          // Save user session
+          Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+          await _sessionService.setCurrentUser(userData);
+          print('✅ User session saved from users collection');
+
           _navigateBasedOnRole(userRole);
         } catch (firestoreError) {
           print('⚠️ Firestore error: $firestoreError');
+          // Create minimal user data for session
+          Map<String, dynamic> userData = {
+            'uid': uid,
+            'email': email,
+            'name': userCredential.user!.displayName ?? 'User',
+            'role': role,
+          };
+          await _sessionService.setCurrentUser(userData);
           _navigateBasedOnRole(role);
         }
       } catch (firebaseError) {

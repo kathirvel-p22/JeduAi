@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../services/user_session_service.dart';
 import '../../controllers/auth_controller.dart';
 import '../../services/app_update_service.dart';
@@ -528,13 +529,27 @@ class _PersonalizedProfileViewState extends State<PersonalizedProfileView> {
     );
   }
 
-  String _formatDate(String isoDate) {
-    if (isoDate.isEmpty) return 'N/A';
+  String _formatDate(dynamic dateValue) {
+    if (dateValue == null) return 'N/A';
 
     try {
-      final date = DateTime.parse(isoDate);
+      DateTime date;
+      
+      // Handle Firestore Timestamp
+      if (dateValue is Timestamp) {
+        date = dateValue.toDate();
+      } else if (dateValue is String) {
+        if (dateValue.isEmpty) return 'N/A';
+        date = DateTime.parse(dateValue);
+      } else if (dateValue is DateTime) {
+        date = dateValue;
+      } else {
+        return 'N/A';
+      }
+
       return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
     } catch (e) {
+      print('Error formatting date: $e');
       return 'N/A';
     }
   }

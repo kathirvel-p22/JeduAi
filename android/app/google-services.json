@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "415339822502",
+    "project_id": "jeduai-4b028",
+    "storage_bucket": "jeduai-4b028.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415339822502:android:e757a2c7ba7df529f0a367",
+        "android_client_info": {
+          "package_name": "JeduAi.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415339822502-9339a9olrvceplmc1c63lo9ssb5h5k7d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOl0t6ul03RfKcsHHVTLPnew0hsW-vJ9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415339822502-9339a9olrvceplmc1c63lo9ssb5h5k7d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

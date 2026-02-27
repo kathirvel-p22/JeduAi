@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
 class AllUsersView extends StatefulWidget {
@@ -24,16 +25,68 @@ class _AllUsersViewState extends State<AllUsersView> {
     setState(() => isLoading = true);
 
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final usersJson = prefs.getString('local_users') ?? '[]';
-      final List<dynamic> users = jsonDecode(usersJson);
+      List<Map<String, dynamic>> users = [];
+
+      // Try to load from Firestore first
+      try {
+        final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+        // Fetch from all role-specific collections
+        final studentsSnapshot = await firestore.collection('students').get();
+        final staffSnapshot = await firestore.collection('staff').get();
+        final adminsSnapshot = await firestore.collection('admins').get();
+
+        // Add students
+        for (var doc in studentsSnapshot.docs) {
+          users.add({
+            ...doc.data(),
+            'uid': doc.id,
+            'source': 'firebase',
+          });
+        }
+
+        // Add staff
+        for (var doc in staffSnapshot.docs) {
+          users.add({
+            ...doc.data(),
+            'uid': doc.id,
+            'source': 'firebase',
+          });
+        }
+
+        // Add admins
+        for (var doc in adminsSnapshot.docs) {
+          users.add({
+            ...doc.data(),
+            'uid': doc.id,
+            'source': 'firebase',
+          });
+        }
+
+        print('✅ Loaded ${users.length} users from Firestore');
+      } catch (firebaseError) {
+        print('⚠️ Firestore error: $firebaseError');
+        print('🔄 Falling back to local storage...');
+
+        // Fallback to local storage
+        final prefs = await SharedPreferences.getInstance();
+        final usersJson = prefs.getString('local_users') ?? '[]';
+        final List<dynamic> localUsers = jsonDecode(usersJson);
+
+        users = localUsers
+            .map((u) => {
+                  ...Map<String, dynamic>.from(u),
+                  'source': 'local',
+                })
+            .toList();
+
+        print('✅ Loaded ${users.length} users from local storage');
+      }
 
       setState(() {
-        allUsers = users.map((u) => Map<String, dynamic>.from(u)).toList();
+        allUsers = users;
         isLoading = false;
       });
-
-      print('✅ Loaded ${allUsers.length} users from local storage');
     } catch (e) {
       print('❌ Error loading users: $e');
       setState(() => isLoading = false);
@@ -204,7 +257,6 @@ class _AllUsersViewState extends State<AllUsersView> {
 
   Widget _buildUserCard(Map<String, dynamic> user) {
     final roleColor = _getRoleColor(user['role']);
-    final createdAt = _formatDate(user['createdAt']);
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -242,7 +294,8 @@ class _AllUsersViewState extends State<AllUsersView> {
                 _buildInfoRow('User ID', user['uid'] ?? 'N/A'),
                 _buildInfoRow('Email', user['email'] ?? 'N/A'),
                 _buildInfoRow('Role', user['role'] ?? 'N/A'),
-                _buildInfoRow('Created', createdAt),
+                _buildInfoRow('Created', _formatTimestamp(user['createdAt'])),
+                _buildInfoRow('Source', _getDataSource(user)),
                 if (user['department'] != null)
                   _buildInfoRow('Department', user['department']),
                 if (user['year'] != null) _buildInfoRow('Year', user['year']),
@@ -305,6 +358,25 @@ class _AllUsersViewState extends State<AllUsersView> {
     );
   }
 
+  String _formatTimestamp(dynamic timestamp) {
+    if (timestamp == null) return 'N/A';
+    
+    try {
+      DateTime date;
+      if (timestamp is Timestamp) {
+        date = timestamp.toDate();
+      } else if (timestamp is String) {
+        date = DateTime.parse(timestamp);
+      } else {
+        return 'N/A';
+      }
+      
+      return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return 'N/A';
+    }
+  }
+
   Color _getRoleColor(String? role) {
     switch (role?.toLowerCase()) {
       case 'student':
@@ -318,14 +390,8 @@ class _AllUsersViewState extends State<AllUsersView> {
     }
   }
 
-  String _formatDate(String? isoDate) {
-    if (isoDate == null || isoDate.isEmpty) return 'N/A';
-    try {
-      final date = DateTime.parse(isoDate);
-      return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return 'N/A';
-    }
+  String _getDataSource(Map<String, dynamic> user) {
+    return user['source'] == 'firebase' ? 'Cloud (Firebase)' : 'Local Storage';
   }
 
   void _showUserDetails(Map<String, dynamic> user) {
@@ -375,13 +441,38 @@ class _AllUsersViewState extends State<AllUsersView> {
 
   Future<void> _performDelete(Map<String, dynamic> user) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final usersJson = prefs.getString('local_users') ?? '[]';
-      final List<dynamic> users = jsonDecode(usersJson);
+      final source = user['source'] ?? 'local';
 
-      users.removeWhere((u) => u['uid'] == user['uid']);
+      if (source == 'firebase') {
+        // Delete from Firestore
+        final FirebaseFirestore firestore = FirebaseFirestore.instance;
+        final role = user['role']?.toLowerCase() ?? '';
 
-      await prefs.setString('local_users', jsonEncode(users));
+        if (role == 'student') {
+          await firestore.collection('students').doc(user['uid']).delete();
+        } else if (role == 'staff') {
+          await firestore.collection('staff').doc(user['uid']).delete();
+        } else if (role == 'admin') {
+          await firestore.collection('admins').doc(user['uid']).delete();
+        }
+
+        // Also delete from users collection
+        await firestore.collection('users').doc(user['uid']).delete();
+
+        // Delete from Firebase Auth if possible
+        // Note: This requires admin SDK, so we skip it for now
+        print('✅ User deleted from Firestore');
+      } else {
+        // Delete from local storage
+        final prefs = await SharedPreferences.getInstance();
+        final usersJson = prefs.getString('local_users') ?? '[]';
+        final List<dynamic> users = jsonDecode(usersJson);
+
+        users.removeWhere((u) => u['uid'] == user['uid']);
+
+        await prefs.setString('local_users', jsonEncode(users));
+        print('✅ User deleted from local storage');
+      }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -394,6 +485,7 @@ class _AllUsersViewState extends State<AllUsersView> {
 
       await loadAllUsers();
     } catch (e) {
+      print('❌ Error deleting user: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -457,7 +549,7 @@ class _AllUsersViewState extends State<AllUsersView> {
                 ),
               ),
               const Text(
-                'Data is stored locally on this device only. To use cloud database, configure Firebase or Supabase.',
+                'This view shows users from both Firebase Cloud and Local Storage. Users with "Source: Cloud (Firebase)" are synced across all devices.',
                 style: TextStyle(fontSize: 12),
               ),
             ],
