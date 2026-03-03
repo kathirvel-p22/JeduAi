@@ -3,7 +3,7 @@
     "short_name": "JeduAI",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#2196F3",
+    "background_color": "#ffffff",
     "theme_color": "#2196F3",
     "description": "AI-powered educational platform with intelligent assessment, multi-language support, and real-time AI tutoring",
     "orientation": "portrait-primary",
