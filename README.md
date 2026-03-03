@@ -73,25 +73,27 @@ An AI-powered educational platform built with Flutter, featuring intelligent ass
 ### Latest Release
 Download the Android APK and install on your device:
 
-**[📱 Download JeduAI APK (v1.0.1) - Direct Download](https://drive.google.com/uc?export=download&id=1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv)**
+**[📱 Download JeduAI APK (v1.0.2) - Direct Download](https://drive.google.com/uc?export=download&id=1HthWUYS96OI2fh8-SLpyDQl20pb59Ltc)**
 
-**Alternative:** [Open in Google Drive](https://drive.google.com/file/d/1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv/view?usp=sharing) (tap 3 dots → Download)
+**Alternative:** [Open in Google Drive](https://drive.google.com/file/d/1HthWUYS96OI2fh8-SLpyDQl20pb59Ltc/view?usp=sharing) (tap 3 dots → Download)
 
 > **📱 Mobile Tip**: If the link shows a preview, tap the **3 dots menu (⋮)** → **"Download"**
 
-### What's New in v1.0.1
-✅ Personalized user profiles with analytics  
-✅ User session management (separate data per user)  
-✅ All Users Database view (see all registered users)  
-✅ Auto-update system (checks for new versions automatically)  
-✅ Manual "Check for Updates" button in profile  
-✅ Profile statistics tracking (assessments, videos, translations)  
-✅ Login count and last login tracking  
-✅ Edit profile functionality  
-✅ Bug fixes and improvements  
+### What's New in v1.0.2 🚀
+✅ **Firebase Cloud Integration** - Multi-device sync across all platforms  
+✅ **Real-time Notifications** - Instant updates across all devices  
+✅ **Custom JeduAi App Icon** - Professional branding (no more Flutter logo)  
+✅ **YouTube Video Integration** - Educational courses with configurable URLs  
+✅ **Secure Admin Protection** - Default admin (admin@vsb.edu / admin123)  
+✅ **Cross-device User Sync** - Sign up on one device, access from anywhere  
+✅ **Enhanced Staff Portal** - Create assessments, classes, courses with real-time sync  
+✅ **Improved Student Portal** - Real-time notifications for new content  
+✅ **Admin Dashboard** - View all users from any device instantly  
+✅ **Auto-update System** - Seamless app updates  
+✅ **Multi-platform Support** - Android, Web, iOS ready for production  
 
 ### Installation Instructions
-1. Download the APK file (57.8 MB)
+1. Download the APK file (60.2 MB)
 2. On your Android device, go to Settings → Security
 3. Enable "Install from Unknown Sources" or "Install Unknown Apps"
 4. Open the downloaded APK file
@@ -139,8 +141,19 @@ flutter run
 
 ## 🔑 Demo Credentials
 
-### For Testing Without Firebase Setup
-If you haven't set up Firebase yet, the app has a fallback authentication system:
+### Demo Credentials (Production Ready)
+
+### Default Admin (Auto-created)
+- **Email**: `admin@vsb.edu` | **Password**: `admin123`
+- **Note**: This admin is automatically created on first app launch
+
+### For New Users
+- **Students & Staff**: Can sign up with any email and create their own accounts
+- **Real-time Sync**: All user data syncs across devices via Firebase Cloud
+- **Multi-device Access**: Sign up on one device, login from anywhere
+
+### Legacy Demo Accounts (Fallback)
+If Firebase is not configured, these demo accounts work:
 
 ### Students
 - **Email**: `kathirvel@gmail.com` | **Password**: Any password
@@ -318,11 +331,11 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 
 ### Android APK Download
 
-**[⬇️ Click Here to Download JeduAI APK (v1.0.1)](https://drive.google.com/uc?export=download&id=1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv)**
+**[⬇️ Click Here to Download JeduAI APK (v1.0.2)](https://drive.google.com/uc?export=download&id=1HthWUYS96OI2fh8-SLpyDQl20pb59Ltc)**
 
-**Alternative Link (if above doesn't work):** [Open in Google Drive](https://drive.google.com/file/d/1v6Aoc1N-2f5QJ33vCdswehAA9sVMxtwv/view?usp=sharing)
+**Alternative Link (if above doesn't work):** [Open in Google Drive](https://drive.google.com/file/d/1HthWUYS96OI2fh8-SLpyDQl20pb59Ltc/view?usp=sharing)
 
-**Size**: 57.8 MB | **Version**: 1.0.1 | **Platform**: Android 5.0+
+**Size**: 60.2 MB | **Version**: 1.0.2 | **Platform**: Android 5.0+
 
 > **📱 Mobile Users**: If the link opens a preview page, tap the **3 dots menu (⋮)** at top-right → Select **"Download"**
 
@@ -331,13 +344,13 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 #### Step 1: Download the APK
 
 **On Android Phone:**
-1. Click the **[Download Link](https://drive.google.com/uc?export=download&id=1I-2l-X1tO93DDCYwuNRE6PFnCjJP8Pnz)** above
+1. Click the **[Download Link](https://drive.google.com/uc?export=download&id=1HthWUYS96OI2fh8-SLpyDQl20pb59Ltc)** above
 2. If it opens a preview page instead:
    - Tap the **3 dots menu (⋮)** at the top-right corner
    - Select **"Download"** from the menu
 3. Or use the **Alternative Link** and tap the download icon (⬇️)
 4. If prompted "Can't scan for viruses", tap **"Download anyway"** (the file is safe)
-5. Wait for download to complete (57.8 MB, takes 1-2 minutes depending on your internet speed)
+5. Wait for download to complete (60.2 MB, takes 1-2 minutes depending on your internet speed)
 6. You'll see a notification when download is complete
 
 **On PC/Laptop:**
@@ -362,7 +375,7 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 
 #### Step 3: Install the APK
 1. Open your **Downloads** folder or notification panel
-2. Tap on **jeduai-app-v1.0.1.apk**
+2. Tap on **app-release.apk** (JeduAI v1.0.2)
 3. Tap **"Install"** button
 4. Wait for installation to complete (30-60 seconds)
 5. Tap **"Open"** or find the **JeduAI** app icon on your home screen
@@ -373,7 +386,17 @@ For support, email kathirvel@gmail.com or create an issue in this repository.
 3. Choose your role and login with demo credentials (see below)
 4. Start exploring all features!
 
-#### 🔐 Demo Login Credentials
+#### 🔐 Demo Login Credentials (Production Ready)
+**Default Admin (Auto-created on first launch):**
+- Email: `admin@vsb.edu`
+- Password: `admin123`
+
+**New Users (Recommended):**
+- Students & Staff can sign up with any email
+- All data syncs across devices via Firebase Cloud
+- Real-time notifications work instantly
+
+**Legacy Demo Accounts (Fallback if Firebase not configured):**
 **Student Access:**
 - Email: `kathirvel@gmail.com`
 - Password: Any password (e.g., `123456`)
@@ -402,11 +425,25 @@ Watch how to download and install: [Coming Soon]
 4. **JeduAI App** → Login → Explore Features!
 
 ### ✅ All Features Working
-- ✅ AI Tutor (Multi-language chat)
-- ✅ Text Translation (100+ languages)
-- ✅ Video Translation (20+ languages)
-- ✅ AI Assessment Generator
-- ✅ All Portals (Admin, Staff, Student)
+- ✅ **Firebase Cloud Integration** - Multi-device sync
+- ✅ **Real-time Notifications** - Instant updates across devices
+- ✅ **Custom JeduAi App Icon** - Professional branding
+- ✅ **AI Tutor** (Multi-language chat)
+- ✅ **Text Translation** (100+ languages)
+- ✅ **Video Translation** (20+ languages)
+- ✅ **AI Assessment Generator** with Gemini AI
+- ✅ **YouTube Course Integration** - Educational videos
+- ✅ **All Portals** (Admin, Staff, Student) with real-time sync
+- ✅ **Auto-update System** - Seamless version updates
+- ✅ **Cross-platform** - Android, Web, iOS ready
+
+### 🔥 Production Ready Features
+- **Multi-device Deployment**: Deploy on Google Play Store and web hosting
+- **Real-time Database**: Firebase Firestore with instant sync
+- **Secure Authentication**: Firebase Auth with role-based access
+- **Admin Protection**: Only existing admins can create new admin accounts
+- **Scalable Architecture**: Supports unlimited users across devices
+- **Professional UI**: Custom app icon and branding
 
 ### Build from Source
 ```bash
